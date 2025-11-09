@@ -1,6 +1,7 @@
 package net.dravigen.let_me_move_ex.mixin;
 
 import net.dravigen.dranimation_lib.interfaces.ICustomMovementEntity;
+import net.dravigen.dranimation_lib.utils.AnimationUtils;
 import net.minecraft.src.*;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -24,6 +25,8 @@ public abstract class EntityLivingBaseMixin extends Entity implements ICustomMov
 	
 	@Inject(method = "getSpeedModifier", at = @At("RETURN"), cancellable = true)
 	private void applyAnimationSpeedModifier(CallbackInfoReturnable<Float> cir) {
+		if (!AnimationUtils.extraIsPresent) return;
+		
 		if (this.lmm_$getAnimation() == null) return;
 		
 		cir.setReturnValue(cir.getReturnValueF() * this.lmm_$getAnimation().speedModifier);

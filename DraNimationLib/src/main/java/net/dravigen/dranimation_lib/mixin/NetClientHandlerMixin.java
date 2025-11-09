@@ -1,4 +1,4 @@
-package net.dravigen.let_me_move.mixin.client;
+package net.dravigen.dranimation_lib.mixin;
 
 import net.dravigen.dranimation_lib.packet.PacketUtils;
 import net.minecraft.src.*;
@@ -20,6 +20,7 @@ public abstract class NetClientHandlerMixin extends NetHandler {
 			case PacketUtils.ANIMATION_SYNC_CHANNEL -> PacketUtils.handleAnimationSync(packet, this.mc.thePlayer);
 			case PacketUtils.ANIMATION_DATA_SYNC_CHANNEL ->
 					PacketUtils.handleAnimationDataToTrackingPlayer(packet, this.mc.renderViewEntity);
+			case PacketUtils.EXTRA_CHECK_CHANNEL -> PacketUtils.handleExtraIsPresent(packet);
 		}
 	}
 }

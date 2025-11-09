@@ -9,7 +9,8 @@
     "EntityPlayerMixin",
     "client.GameSettingsMixin",
     "client.render.EntityRendererMixin",
-    "server.NetServerHandlerMixin"
+    "server.NetServerHandlerMixin",
+    "server.ServerConfigurationManagerMixin"
   ],
   "client": [
     "client.EntityPlayerSPMixin",

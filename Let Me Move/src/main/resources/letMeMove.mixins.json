@@ -14,7 +14,6 @@
   "client": [
     "client.EntityPlayerSPMixin",
     "client.MinecraftMixin",
-    "client.NetClientHandlerMixin",
     "client.render.GuiIngameMixin",
     "client.render.ModelBipedMixin"
   ],

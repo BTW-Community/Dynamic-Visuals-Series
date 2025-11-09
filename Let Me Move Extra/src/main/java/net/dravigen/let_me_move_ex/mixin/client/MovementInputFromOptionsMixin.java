@@ -1,5 +1,6 @@
 package net.dravigen.let_me_move_ex.mixin.client;
 
+import net.dravigen.dranimation_lib.utils.AnimationUtils;
 import net.minecraft.src.MovementInput;
 import net.minecraft.src.MovementInputFromOptions;
 import org.objectweb.asm.Opcodes;
@@ -12,6 +13,8 @@ public abstract class MovementInputFromOptionsMixin extends MovementInput {
 	
 	@Redirect(method = "updatePlayerMoveState", at = @At(value = "FIELD", target = "Lnet/minecraft/src/MovementInputFromOptions;sneak:Z", opcode = Opcodes.GETFIELD))
 	private boolean disableVanillaSneakSlow(MovementInputFromOptions instance) {
+		if (!AnimationUtils.extraIsPresent) return instance.sneak;
+		
 		return false;
 	}
 }

@@ -1,6 +1,7 @@
 package net.dravigen.dranimation_lib.packet;
 
 import net.dravigen.dranimation_lib.interfaces.ICustomMovementEntity;
+import net.dravigen.dranimation_lib.utils.AnimationUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.src.*;
@@ -12,6 +13,7 @@ public class PacketUtils {
 	public static final String ANIMATION_SYNC_CHANNEL = "LMM:AnimIDSync";
 	public static final String ANIMATION_DATA_SYNC_CHANNEL = "LMM:AnimDataSync";
 	public static final String HUNGER_EXHAUSTION_CHANNEL = "LMM:Exhaustion";
+	public static final String EXTRA_CHECK_CHANNEL = "LMM:CheckExtra";
 	
 	public static void animationStoCSync(ResourceLocation ID, NetServerHandler serverHandler) {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -28,6 +30,7 @@ public class PacketUtils {
 		
 		serverHandler.sendPacket(packet);
 	}
+	
 	@Environment(EnvType.CLIENT)
 	public static void animationCtoSSync(ResourceLocation ID) {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -44,6 +47,7 @@ public class PacketUtils {
 		
 		Minecraft.getMinecraft().getNetHandler().addToSendQueue(packet);
 	}
+	
 	public static void handleAnimationSync(Packet250CustomPayload packet, EntityPlayer player) {
 		try {
 			ByteArrayInputStream bis = new ByteArrayInputStream(packet.data);
@@ -73,6 +77,7 @@ public class PacketUtils {
 		
 		Minecraft.getMinecraft().getNetHandler().addToSendQueue(packet);
 	}
+	
 	public static void handleExhaustionFromClient(Packet250CustomPayload packet, EntityPlayer player) {
 		try {
 			ByteArrayInputStream bis = new ByteArrayInputStream(packet.data);
@@ -122,6 +127,7 @@ public class PacketUtils {
 		
 		Minecraft.getMinecraft().getNetHandler().addToSendQueue(packet);
 	}
+	
 	public static void handleAnimationDataOnServer(Packet250CustomPayload packet, Entity player) {
 		try {
 			ByteArrayInputStream bis = new ByteArrayInputStream(packet.data);
@@ -197,6 +203,7 @@ public class PacketUtils {
 			player.getServerForPlayer().getEntityTracker().sendPacketToAllAssociatedPlayers(player, packet);
 		}
 	}
+	
 	@Environment(EnvType.CLIENT)
 	public static void handleAnimationDataToTrackingPlayer(Packet250CustomPayload packet, Entity player) {
 		try {
@@ -236,6 +243,34 @@ public class PacketUtils {
 			throw new RuntimeException(e);
 		}
 	}
+	
+	public static void sendExtraIsPresent(EntityPlayerMP player, boolean present) {
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		DataOutputStream dos = new DataOutputStream(bos);
+		
+		try {
+			dos.writeBoolean(present);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		
+		Packet250CustomPayload packet = new Packet250CustomPayload(EXTRA_CHECK_CHANNEL, bos.toByteArray());
+		
+		player.playerNetServerHandler.sendPacketToPlayer(packet);
+	}
+
+	@Environment(EnvType.CLIENT)
+	public static void handleExtraIsPresent(Packet250CustomPayload packet) {
+		try {
+			ByteArrayInputStream bis = new ByteArrayInputStream(packet.data);
+			DataInputStream dis = new DataInputStream(bis);
+			
+			AnimationUtils.extraIsPresent = dis.readBoolean();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
+	
 	
 	
 	@Environment(EnvType.CLIENT)

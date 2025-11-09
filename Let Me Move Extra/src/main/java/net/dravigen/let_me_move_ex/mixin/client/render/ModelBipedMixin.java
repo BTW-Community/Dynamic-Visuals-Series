@@ -26,6 +26,8 @@ public abstract class ModelBipedMixin extends ModelBase {
 	
 	@Inject(method = "render", at = @At("HEAD"))
 	private void rotateBody(Entity entity, float f, float g, float h, float i, float j, float u, CallbackInfo ci) {
+		if (!AnimationUtils.extraIsPresent) return;
+		
 		if (!(entity instanceof EntityPlayer player) || (ModelBiped) (Object) this instanceof PlayerArmorModel) return;
 		
 		ICustomMovementEntity customEntity = (ICustomMovementEntity) player;

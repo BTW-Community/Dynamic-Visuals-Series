@@ -3,6 +3,7 @@ package net.dravigen.let_me_move_ex.mixin;
 import net.dravigen.dranimation_lib.animation.BaseAnimation;
 import net.dravigen.dranimation_lib.interfaces.ICustomMovementEntity;
 import net.dravigen.dranimation_lib.packet.PacketUtils;
+import net.dravigen.dranimation_lib.utils.AnimationUtils;
 import net.dravigen.dranimation_lib.utils.GeneralUtils;
 import net.minecraft.src.*;
 import org.spongepowered.asm.mixin.Mixin;
@@ -37,6 +38,8 @@ public abstract class EntityPlayerMixin extends EntityLivingBase {
 	
 	@Inject(method = "onUpdate", at = @At("HEAD"))
 	private void updateAnimation(CallbackInfo ci) {
+		if (!AnimationUtils.extraIsPresent) return;
+		
 		if (this.sleeping) return;
 		
 		this.setSize(0.6f, ((ICustomMovementEntity) this).lmm_$getAnimation().height);
@@ -44,6 +47,8 @@ public abstract class EntityPlayerMixin extends EntityLivingBase {
 	
 	@Inject(method = "moveEntityWithHeading", at = @At("HEAD"), cancellable = true)
 	private void handleCustomMove(CallbackInfo ci) {
+		if (!AnimationUtils.extraIsPresent) return;
+		
 		ICustomMovementEntity customPlayer = (ICustomMovementEntity) this;
 		double prevX = this.posX;
 		double prevY = this.posY;
@@ -64,6 +69,8 @@ public abstract class EntityPlayerMixin extends EntityLivingBase {
 	
 	@Inject(method = "addMovementStat", at = @At(value = "HEAD"), cancellable = true)
 	private void customExhaustion(double distX, double distY, double distZ, CallbackInfo ci) {
+		if (!AnimationUtils.extraIsPresent) return;
+		
 		BaseAnimation animation = ((ICustomMovementEntity) this).lmm_$getAnimation();
 		
 		if (animation == null) return;

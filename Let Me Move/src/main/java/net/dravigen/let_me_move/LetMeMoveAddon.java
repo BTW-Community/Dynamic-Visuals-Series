@@ -4,6 +4,7 @@ import btw.AddonHandler;
 import btw.BTWAddon;
 import btw.world.util.data.DataEntry;
 import btw.world.util.data.DataProvider;
+import net.dravigen.dranimation_lib.utils.AnimationUtils;
 import net.dravigen.let_me_move.animation.AnimRegistry;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.src.*;
@@ -37,6 +38,6 @@ public class LetMeMoveAddon extends BTWAddon {
 	}
 	
 	public static boolean isExtraLoaded() {
-		return FabricLoader.getInstance().isModLoaded("let_me_move_ex");
+		return FabricLoader.getInstance().isModLoaded("let_me_move_ex") && AnimationUtils.extraIsPresent;
 	}
 }

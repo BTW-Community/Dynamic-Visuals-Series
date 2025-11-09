@@ -31,10 +31,16 @@ public abstract class MinecraftMixin {
 	
 	@Inject(method = "runGameLoop", at = @At(value = "HEAD"))
 	private void updateRender(CallbackInfo ci) {
+		if (this.theWorld == null && AnimationUtils.extraIsPresent) {
+			AnimationUtils.extraIsPresent = false;
+		}
+		
+		if (!AnimationUtils.extraIsPresent) return;
+		
 		EntityPlayer player = this.thePlayer;
 		ICustomMovementEntity customPlayer = (ICustomMovementEntity) player;
 		
-		if (!this.isGamePaused && this.theWorld != null && player != null) {
+		if (!this.isGamePaused && player != null) {
 			player.yOffset = GeneralUtils.incrementUntilGoal(player.yOffset, player.height - 0.18f, 0.4f * AnimationUtils.delta);
 			
 			if (customPlayer.lmm_$isAnimation(ROLLING.getID()) && this.gameSettings.thirdPersonView == 0) {

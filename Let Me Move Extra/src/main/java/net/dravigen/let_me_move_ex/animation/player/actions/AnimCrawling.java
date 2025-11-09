@@ -1,5 +1,6 @@
 package net.dravigen.let_me_move_ex.animation.player.actions;
 
+import net.dravigen.dranimation_lib.utils.AnimationUtils;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ResourceLocation;
@@ -13,6 +14,13 @@ public class AnimCrawling extends AnimSwimming {
 	
 	public AnimCrawling() {
 		super(id);
+	}
+	
+	@Override
+	public boolean shouldActivateAnimation(EntityPlayer player, AxisAlignedBB axisAlignedBB) {
+		if (!AnimationUtils.extraIsPresent) return false;
+		
+		return super.shouldActivateAnimation(player, axisAlignedBB);
 	}
 	
 	@Override

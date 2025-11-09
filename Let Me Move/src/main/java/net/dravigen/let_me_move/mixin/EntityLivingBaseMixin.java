@@ -21,8 +21,6 @@ import static net.dravigen.let_me_move.animation.AnimRegistry.*;
 @Mixin(EntityLivingBase.class)
 public abstract class EntityLivingBaseMixin extends Entity implements ICustomMovementEntity {
 	
-	@Shadow
-	public float moveForward;
 	@Unique
 	private float leaningPitch;
 	@Unique

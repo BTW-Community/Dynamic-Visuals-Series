@@ -17,6 +17,13 @@ public class AnimRolling extends AnimCommon {
 	}
 	
 	@Override
+	public boolean shouldActivateAnimation(EntityPlayer player, AxisAlignedBB axisAlignedBB) {
+		if (!AnimationUtils.extraIsPresent) return false;
+		
+		return super.shouldActivateAnimation(player, axisAlignedBB);
+	}
+	
+	@Override
 	public boolean isGeneralConditonsMet(EntityPlayer player, AxisAlignedBB axisAlignedBB) {
 		return !player.isEating() &&
 				!player.doesStatusPreventSprinting() &&
