@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/DraNimationLib.main.iml" filepath="$PROJECT_DIR$/.idea/modules/DraNimationLib.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/DraNimationLib.test.iml" filepath="$PROJECT_DIR$/.idea/modules/DraNimationLib.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Let Me Move Series.iml" filepath="$PROJECT_DIR$/.idea/Let Me Move Series.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Let_Me_Move_!.main.iml" filepath="$PROJECT_DIR$/.idea/modules/Let_Me_Move_!.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Let_Me_Move_!.test.iml" filepath="$PROJECT_DIR$/.idea/modules/Let_Me_Move_!.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Let_Me_Move_!_(Extra).main.iml" filepath="$PROJECT_DIR$/.idea/modules/Let_Me_Move_!_(Extra).main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Let_Me_Move_!_(Extra).test.iml" filepath="$PROJECT_DIR$/.idea/modules/Let_Me_Move_!_(Extra).test.iml" />
+    </modules>
+  </component>
+</project>

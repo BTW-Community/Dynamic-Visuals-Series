@@ -1,10 +1,9 @@
 package net.dravigen.let_me_move.mixin.client;
 
-import net.dravigen.dr_api_gen.animation.BaseAnimation;
-import net.dravigen.dr_api_gen.interfaces.ICustomMovementEntity;
-import net.dravigen.dr_api_gen.packet.PacketUtils;
-import net.dravigen.dr_api_gen.utils.AnimationUtils;
-import net.dravigen.dr_api_gen.utils.GeneralUtils;
+import net.dravigen.dranimation_lib.animation.BaseAnimation;
+import net.dravigen.dranimation_lib.interfaces.ICustomMovementEntity;
+import net.dravigen.dranimation_lib.packet.PacketUtils;
+import net.dravigen.dranimation_lib.utils.AnimationUtils;
 import net.dravigen.let_me_move.LetMeMoveAddon;
 import net.minecraft.src.*;
 import org.objectweb.asm.Opcodes;

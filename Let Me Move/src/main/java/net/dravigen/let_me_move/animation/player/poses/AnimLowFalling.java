@@ -1,11 +1,11 @@
 package net.dravigen.let_me_move.animation.player.poses;
 
-import net.dravigen.dr_api_gen.interfaces.ICustomMovementEntity;
-import net.dravigen.dr_api_gen.utils.AnimationUtils;
-import net.dravigen.dr_api_gen.utils.ModelPartHolder;
+import net.dravigen.dranimation_lib.interfaces.ICustomMovementEntity;
+import net.dravigen.dranimation_lib.utils.AnimationUtils;
+import net.dravigen.dranimation_lib.utils.ModelPartHolder;
 import net.minecraft.src.*;
 
-import static net.dravigen.dr_api_gen.utils.GeneralUtils.pi;
+import static net.dravigen.dranimation_lib.utils.GeneralUtils.pi;
 
 public class AnimLowFalling extends AnimCommon {
 	public static final ResourceLocation id = new ResourceLocation("LMM", "lowFalling");

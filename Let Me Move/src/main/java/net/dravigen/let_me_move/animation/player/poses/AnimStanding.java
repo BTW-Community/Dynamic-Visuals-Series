@@ -1,6 +1,6 @@
 package net.dravigen.let_me_move.animation.player.poses;
 
-import net.dravigen.dr_api_gen.interfaces.ICustomMovementEntity;
+import net.dravigen.dranimation_lib.interfaces.ICustomMovementEntity;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ResourceLocation;
 import net.minecraft.src.StatCollector;

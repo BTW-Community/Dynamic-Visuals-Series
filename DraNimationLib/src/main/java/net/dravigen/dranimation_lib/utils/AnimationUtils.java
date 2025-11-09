@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 public class AnimationUtils {
 	private static final Map<ResourceLocation, BaseAnimation> animationsMap = new HashMap<>();
+	public static float delta = 1;
 	
 	public static Map<ResourceLocation, BaseAnimation> getAnimationsMap() {
 		return animationsMap.entrySet()

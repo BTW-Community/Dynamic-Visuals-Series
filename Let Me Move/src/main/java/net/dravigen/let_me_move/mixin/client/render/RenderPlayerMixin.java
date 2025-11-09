@@ -1,17 +1,18 @@
 package net.dravigen.let_me_move.mixin.client.render;
 
+import net.dravigen.dranimation_lib.utils.AnimationUtils;
 import net.dravigen.let_me_move.animation.player.poses.AnimCrouching;
 import net.dravigen.let_me_move.animation.player.poses.AnimStanding;
-import net.dravigen.dr_api_gen.interfaces.ICustomMovementEntity;
-import net.dravigen.dr_api_gen.utils.GeneralUtils;
-import net.dravigen.dr_api_gen.utils.ModelPartHolder;
+import net.dravigen.dranimation_lib.interfaces.ICustomMovementEntity;
+import net.dravigen.dranimation_lib.utils.GeneralUtils;
+import net.dravigen.dranimation_lib.utils.ModelPartHolder;
 import net.minecraft.src.*;
 import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
-import static net.dravigen.dr_api_gen.utils.GeneralUtils.*;
+import static net.dravigen.dranimation_lib.utils.GeneralUtils.*;
 
 @Mixin(RenderPlayer.class)
 public abstract class RenderPlayerMixin {
@@ -40,21 +41,22 @@ public abstract class RenderPlayerMixin {
 							: -((sin(partHolder.getBody()[0]) * 12) / 16)
 						  : animationID == AnimCrouching.id ? 0 : -((sin(partHolder.getBody()[0]) * 12) / 16));
 	
-		customEntity.lmm_$getCapeRot()[0] = GeneralUtils.incrementUntilGoal(customEntity.lmm_$getCapeRot()[0], MathHelper.clamp_float(angle, 0, 135), 0.5f * customEntity.lmm_$getDelta());
+		customEntity.lmm_$getCapeRot()[0] = GeneralUtils.incrementUntilGoal(customEntity.lmm_$getCapeRot()[0], MathHelper.clamp_float(angle, 0, 135), 0.5f *
+				AnimationUtils.delta);
 		GL11.glRotatef(customEntity.lmm_$getCapeRot()[0], x, y, z);
 	}
 	
 	@Redirect(method = "renderSpecials", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL11;glRotatef(FFFF)V", ordinal = 6), remap = false)
 	private void customCape2(float angle, float x, float y, float z, AbstractClientPlayer player) {
 		ICustomMovementEntity customEntity = (ICustomMovementEntity) player;
-		customEntity.lmm_$getCapeRot()[1] = GeneralUtils.incrementUntilGoal(customEntity.lmm_$getCapeRot()[1], angle, 0.1f * customEntity.lmm_$getDelta());
+		customEntity.lmm_$getCapeRot()[1] = GeneralUtils.incrementUntilGoal(customEntity.lmm_$getCapeRot()[1], angle, 0.1f * AnimationUtils.delta);
 		GL11.glRotatef(customEntity.lmm_$getCapeRot()[1], x, y, z);
 	}
 	
 	@Redirect(method = "renderSpecials", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL11;glRotatef(FFFF)V", ordinal = 7), remap = false)
 	private void customCape3(float angle, float x, float y, float z, AbstractClientPlayer player) {
 		ICustomMovementEntity customEntity = (ICustomMovementEntity) player;
-		customEntity.lmm_$getCapeRot()[2] = GeneralUtils.incrementUntilGoal(customEntity.lmm_$getCapeRot()[2], angle, 0.1f * customEntity.lmm_$getDelta());
+		customEntity.lmm_$getCapeRot()[2] = GeneralUtils.incrementUntilGoal(customEntity.lmm_$getCapeRot()[2], angle, 0.1f * AnimationUtils.delta);
 		GL11.glRotatef(customEntity.lmm_$getCapeRot()[2], x, y, z);
 	}
 	

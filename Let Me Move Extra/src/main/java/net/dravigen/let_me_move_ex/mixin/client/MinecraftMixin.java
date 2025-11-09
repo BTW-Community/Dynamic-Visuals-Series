@@ -1,15 +1,14 @@
 package net.dravigen.let_me_move_ex.mixin.client;
 
-import com.prupe.mcpatcher.mal.resource.TexturePackChangeHandler;
-import net.dravigen.dr_api_gen.interfaces.ICustomMovementEntity;
-import net.dravigen.dr_api_gen.utils.GeneralUtils;
+import net.dravigen.dranimation_lib.interfaces.ICustomMovementEntity;
+import net.dravigen.dranimation_lib.utils.AnimationUtils;
+import net.dravigen.dranimation_lib.utils.GeneralUtils;
 import net.minecraft.src.*;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static net.dravigen.let_me_move_ex.animation.AnimRegistry.ROLLING;
@@ -25,8 +24,6 @@ public abstract class MinecraftMixin {
 	public EntityClientPlayerMP thePlayer;
 	@Shadow
 	public GameSettings gameSettings;
-	@Unique
-	long prevTime;
 	@Shadow
 	private boolean isGamePaused;
 	
@@ -38,9 +35,7 @@ public abstract class MinecraftMixin {
 		ICustomMovementEntity customPlayer = (ICustomMovementEntity) player;
 		
 		if (!this.isGamePaused && this.theWorld != null && player != null) {
-			float delta = (System.currentTimeMillis() - prevTime) / 25f;
-			
-			player.yOffset = GeneralUtils.incrementUntilGoal(player.yOffset, player.height - 0.18f, 0.4f * delta);
+			player.yOffset = GeneralUtils.incrementUntilGoal(player.yOffset, player.height - 0.18f, 0.4f * AnimationUtils.delta);
 			
 			if (customPlayer.lmm_$isAnimation(ROLLING.getID()) && this.gameSettings.thirdPersonView == 0) {
 				float leaning = customPlayer.lmm_$getLeaningPitch(this.getTimer().renderPartialTicks);
@@ -63,7 +58,5 @@ public abstract class MinecraftMixin {
 			
 			player.renderYawOffset = yaw;
 		}
-		
-		prevTime = System.currentTimeMillis();
 	}
 }

@@ -1,12 +1,12 @@
 package net.dravigen.let_me_move_ex.animation.player.actions;
 
-import net.dravigen.dr_api_gen.interfaces.ICustomMovementEntity;
-import net.dravigen.dr_api_gen.utils.AnimationUtils;
-import net.dravigen.dr_api_gen.utils.ModelPartHolder;
+import net.dravigen.dranimation_lib.interfaces.ICustomMovementEntity;
+import net.dravigen.dranimation_lib.utils.AnimationUtils;
+import net.dravigen.dranimation_lib.utils.ModelPartHolder;
 import net.minecraft.src.*;
 import net.dravigen.let_me_move.animation.player.poses.AnimCommon;
 
-import static net.dravigen.dr_api_gen.utils.GeneralUtils.*;
+import static net.dravigen.dranimation_lib.utils.GeneralUtils.*;
 
 public class AnimPullingUp extends AnimCommon {
 	public static final ResourceLocation id = new ResourceLocation("LMM", "pullingUp");
@@ -58,7 +58,7 @@ public class AnimPullingUp extends AnimCommon {
 				0
 		};
 		
-		float[] body = new float[]{0, 0, 0, 0, 0, 0};
+		float[] body = new float[]{0, 0, 0, 0, 12, 0};
 		float[] rArm = new float[]{0, 0, 0, -5, 2, 0};
 		float[] lArm = new float[]{0, 0, 0, 5, 2, 0};
 		float[] rLeg = new float[]{0, 0, 0, -1.9f, 12, 0.1f};

@@ -6,9 +6,7 @@ import btw.world.util.data.DataEntry;
 import btw.world.util.data.DataProvider;
 import net.dravigen.let_me_move.animation.AnimRegistry;
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.src.*;
-import org.lwjgl.input.Keyboard;
 
 public class LetMeMoveAddon extends BTWAddon {
 	

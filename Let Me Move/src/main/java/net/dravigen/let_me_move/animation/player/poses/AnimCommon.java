@@ -1,13 +1,13 @@
 package net.dravigen.let_me_move.animation.player.poses;
 
-import net.dravigen.dr_api_gen.animation.BaseAnimation;
-import net.dravigen.dr_api_gen.interfaces.ICustomMovementEntity;
-import net.dravigen.dr_api_gen.utils.AnimationUtils;
-import net.dravigen.dr_api_gen.utils.GeneralUtils;
-import net.dravigen.dr_api_gen.utils.ModelPartHolder;
+import net.dravigen.dranimation_lib.animation.BaseAnimation;
+import net.dravigen.dranimation_lib.interfaces.ICustomMovementEntity;
+import net.dravigen.dranimation_lib.utils.AnimationUtils;
+import net.dravigen.dranimation_lib.utils.GeneralUtils;
+import net.dravigen.dranimation_lib.utils.ModelPartHolder;
 import net.minecraft.src.*;
 
-import static net.dravigen.dr_api_gen.utils.GeneralUtils.*;
+import static net.dravigen.dranimation_lib.utils.GeneralUtils.*;
 
 public class AnimCommon extends BaseAnimation {
 	public AnimCommon(ResourceLocation id, float height, float speedModifier, boolean needYOffsetUpdate,
@@ -181,19 +181,21 @@ public class AnimCommon extends BaseAnimation {
 		
 		float k = 1;
 		
+		MovementType movementType = GeneralUtils.getRelativeMovement(player);
+		
+		
 		boolean isJumping = customEntity.lmm_$getJumpTime() > 0;
 		boolean isCrouching = model.isSneak || customEntity.lmm_$getAnimationID() == AnimCrouching.id;
 		boolean isFlying = customEntity.lmm_$getIsFlying();
 		float forw = GeneralUtils.getMovementComponents(player)[0];
 		float straf = GeneralUtils.getMovementComponents(player)[1];
+		forw = forw > 0 ? forw < 0.2 ? 0 : forw : forw > -0.2 ? 0 : forw;
+		straf = straf > 0 ? straf < 0.2 ? 0 : straf : straf > -0.2 ? 0 : straf;
 		boolean bSprint = player.isSprinting();
-		boolean backward = forw < 0 && straf == 0;
+		boolean backward = movementType == MovementType.BACKWARD && straf == 0;
 		int jumpSwing = customEntity.lmm_$getJumpSwing();
 		double motionY = player.posY - player.prevPosY;
 		boolean isMoving = player.posX != player.prevPosX || player.posZ != player.prevPosZ;
-		
-		forw = forw > 0 ? forw < 0.2 ? 0 : forw : forw > -0.2 ? 0 : forw;
-		straf = straf > 0 ? straf < 0.2 ? 0 : straf : straf > -0.2 ? 0 : straf;
 		
 		if (entity == Minecraft.getMinecraft().thePlayer) {
 			float yaw;

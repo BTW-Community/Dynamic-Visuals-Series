@@ -1,9 +1,9 @@
 package net.dravigen.let_me_move_ex.animation;
 
-import net.dravigen.dr_api_gen.animation.BaseAnimation;
+import net.dravigen.dranimation_lib.animation.BaseAnimation;
 import net.dravigen.let_me_move_ex.animation.player.actions.*;
 
-import static net.dravigen.dr_api_gen.utils.AnimationUtils.registerAnimation;
+import static net.dravigen.dranimation_lib.utils.AnimationUtils.registerAnimation;
 
 public class AnimRegistry {
 	public final static BaseAnimation SWIMMING = new AnimSwimming();

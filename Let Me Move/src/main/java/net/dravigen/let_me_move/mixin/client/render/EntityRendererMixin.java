@@ -1,16 +1,12 @@
 package net.dravigen.let_me_move.mixin.client.render;
 
-import net.dravigen.let_me_move.animation.AnimRegistry;
-import net.dravigen.dr_api_gen.interfaces.ICustomMovementEntity;
 import net.minecraft.src.*;
 import org.lwjgl.opengl.GL11;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(EntityRenderer.class)
 public abstract class EntityRendererMixin {

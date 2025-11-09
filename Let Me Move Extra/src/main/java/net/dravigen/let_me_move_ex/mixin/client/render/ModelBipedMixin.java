@@ -2,9 +2,10 @@ package net.dravigen.let_me_move_ex.mixin.client.render;
 
 import btw.block.BTWBlocks;
 import btw.entity.model.PlayerArmorModel;
-import net.dravigen.dr_api_gen.animation.BaseAnimation;
-import net.dravigen.dr_api_gen.interfaces.ICustomMovementEntity;
-import net.dravigen.dr_api_gen.utils.GeneralUtils;
+import net.dravigen.dranimation_lib.animation.BaseAnimation;
+import net.dravigen.dranimation_lib.interfaces.ICustomMovementEntity;
+import net.dravigen.dranimation_lib.utils.AnimationUtils;
+import net.dravigen.dranimation_lib.utils.GeneralUtils;
 import net.minecraft.src.*;
 import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Mixin;
@@ -22,8 +23,6 @@ import static net.dravigen.let_me_move_ex.animation.AnimRegistry.*;
 public abstract class ModelBipedMixin extends ModelBase {
 	@Unique
 	long prevTime;
-	@Unique
-	float delta = 1;
 	
 	@Inject(method = "render", at = @At("HEAD"))
 	private void rotateBody(Entity entity, float f, float g, float h, float i, float j, float u, CallbackInfo ci) {
@@ -73,9 +72,7 @@ public abstract class ModelBipedMixin extends ModelBase {
 		float delta = (System.currentTimeMillis() - this.prevTime) / 25f;
 		delta = delta > 8 ? 8 : delta;
 		
-		this.delta = delta;
-		
-		customEntity.lmm_$setDelta(delta);
+		AnimationUtils.delta = delta;
 		
 		float prevXRotation;
 		float prevYRotation;
@@ -98,7 +95,7 @@ public abstract class ModelBipedMixin extends ModelBase {
 																	 0.3f * delta);
 			}
 			else {
-				prevOffset = animation.yOffset != 0 ? animation.yOffset : 1.98f - (animation.height);
+				prevOffset = animation.yOffset != 0 ? animation.yOffset : 1.98f - entity.height;
 				prevYRotation = GeneralUtils.incrementAngleUntilGoal(renderRotOff[2], 0, 0.1f * delta);
 				prevZRotation = GeneralUtils.incrementAngleUntilGoal(renderRotOff[3], 0, 0.1f * delta);
 				prevXRotation = GeneralUtils.incrementAngleUntilGoal(renderRotOff[1], 90 * leaningPitch, (animation.getID() == CRAWLING.getID() ? 0.5f : 0.2f) * delta);
@@ -123,8 +120,7 @@ public abstract class ModelBipedMixin extends ModelBase {
 		GL11.glRotatef(prevXRotation, 1, 0, 0);
 		
 		if (customEntity.lmm_$isAnimation(HIGH_FALLING.getID())) GL11.glTranslatef(0, -prevOffset, 0);
-		
-		if (customEntity.lmm_$isAnimation(WALL_SLIDING.getID())) {
+		else if (customEntity.lmm_$isAnimation(WALL_SLIDING.getID())) {
 			GeneralUtils.coords side = GeneralUtils.getWallSide(player, 0, entity.height);
 			
 			if (side != null) {

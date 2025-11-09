@@ -1,7 +1,7 @@
 package net.dravigen.let_me_move_ex.mixin.client.render;
 
 import net.dravigen.let_me_move_ex.animation.AnimRegistry;
-import net.dravigen.dr_api_gen.interfaces.ICustomMovementEntity;
+import net.dravigen.dranimation_lib.interfaces.ICustomMovementEntity;
 import net.minecraft.src.*;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

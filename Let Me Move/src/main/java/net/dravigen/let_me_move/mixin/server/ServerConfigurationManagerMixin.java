@@ -2,8 +2,8 @@ package net.dravigen.let_me_move.mixin.server;
 
 import net.dravigen.let_me_move.LetMeMoveAddon;
 import net.dravigen.let_me_move.animation.player.poses.AnimStanding;
-import net.dravigen.dr_api_gen.interfaces.ICustomMovementEntity;
-import net.dravigen.dr_api_gen.packet.PacketUtils;
+import net.dravigen.dranimation_lib.interfaces.ICustomMovementEntity;
+import net.dravigen.dranimation_lib.packet.PacketUtils;
 import net.minecraft.src.EntityPlayerMP;
 import net.minecraft.src.ResourceLocation;
 import net.minecraft.src.ServerConfigurationManager;

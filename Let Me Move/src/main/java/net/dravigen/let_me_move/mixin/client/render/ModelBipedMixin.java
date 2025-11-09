@@ -2,10 +2,10 @@ package net.dravigen.let_me_move.mixin.client.render;
 
 import btw.block.BTWBlocks;
 import btw.entity.model.PlayerArmorModel;
-import net.dravigen.dr_api_gen.animation.BaseAnimation;
-import net.dravigen.dr_api_gen.interfaces.ICustomMovementEntity;
-import net.dravigen.dr_api_gen.utils.AnimationUtils;
-import net.dravigen.dr_api_gen.utils.GeneralUtils;
+import net.dravigen.dranimation_lib.animation.BaseAnimation;
+import net.dravigen.dranimation_lib.interfaces.ICustomMovementEntity;
+import net.dravigen.dranimation_lib.utils.AnimationUtils;
+import net.dravigen.dranimation_lib.utils.GeneralUtils;
 import net.dravigen.let_me_move.LetMeMoveAddon;
 import net.minecraft.src.*;
 import org.lwjgl.opengl.GL11;
@@ -26,8 +26,6 @@ public abstract class ModelBipedMixin extends ModelBase {
 	@Shadow public ModelRenderer bipedCloak;
 	@Unique
 	long prevTime;
-	@Unique
-	float delta = 1;
 	
 	@Inject(method = "render", at = @At("HEAD"))
 	private void rotateBody(Entity entity, float f, float g, float h, float i, float j, float u, CallbackInfo ci) {
@@ -79,9 +77,7 @@ public abstract class ModelBipedMixin extends ModelBase {
 		float delta = (System.currentTimeMillis() - this.prevTime) / 25f;
 		delta = delta > 8 ? 8 : delta;
 		
-		this.delta = delta;
-		
-		customEntity.lmm_$setDelta(delta);
+		AnimationUtils.delta = delta;
 		
 		float prevXRotation;
 		float prevYRotation;
@@ -104,7 +100,7 @@ public abstract class ModelBipedMixin extends ModelBase {
 																	 0.3f * delta);
 			}
 			else {
-				prevOffset = animation.yOffset != 0 ? animation.yOffset : 1.98f - (animation.height);
+				prevOffset = animation.yOffset != 0 ? animation.yOffset : 1.98f - entity.height;
 				prevYRotation = GeneralUtils.incrementAngleUntilGoal(renderRotOff[2], 0, 0.1f * delta);
 				prevZRotation = GeneralUtils.incrementAngleUntilGoal(renderRotOff[3], 0, 0.1f * delta);
 				prevXRotation = GeneralUtils.incrementAngleUntilGoal(renderRotOff[1], 90 * leaningPitch, 0.4f * delta);
@@ -177,7 +173,7 @@ public abstract class ModelBipedMixin extends ModelBase {
 									 i,
 									 j,
 									 u,
-									 this.delta);
+									 AnimationUtils.delta);
 			
 			AnimationUtils.updateAnimationRotation(customEntity.lmm_$getParHolder(), (ModelBiped) (Object) this);
 			

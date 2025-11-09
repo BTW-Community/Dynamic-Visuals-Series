@@ -4,8 +4,8 @@ import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.ResourceLocation;
 
-import static net.dravigen.dr_api_gen.utils.GeneralUtils.isEntityHeadNormalHeightInsideBlock;
-import static net.dravigen.dr_api_gen.utils.GeneralUtils.isInsideWater;
+import static net.dravigen.dranimation_lib.utils.GeneralUtils.isEntityHeadNormalHeightInsideBlock;
+import static net.dravigen.dranimation_lib.utils.GeneralUtils.isInsideWater;
 import static net.dravigen.let_me_move_ex.LetMeMoveExAddon.crawl_key;
 
 public class AnimCrawling extends AnimSwimming {

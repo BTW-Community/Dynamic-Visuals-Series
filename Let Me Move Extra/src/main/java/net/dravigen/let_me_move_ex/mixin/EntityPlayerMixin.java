@@ -1,9 +1,9 @@
 package net.dravigen.let_me_move_ex.mixin;
 
-import net.dravigen.dr_api_gen.animation.BaseAnimation;
-import net.dravigen.dr_api_gen.interfaces.ICustomMovementEntity;
-import net.dravigen.dr_api_gen.packet.PacketUtils;
-import net.dravigen.dr_api_gen.utils.GeneralUtils;
+import net.dravigen.dranimation_lib.animation.BaseAnimation;
+import net.dravigen.dranimation_lib.interfaces.ICustomMovementEntity;
+import net.dravigen.dranimation_lib.packet.PacketUtils;
+import net.dravigen.dranimation_lib.utils.GeneralUtils;
 import net.minecraft.src.*;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -39,11 +39,7 @@ public abstract class EntityPlayerMixin extends EntityLivingBase {
 	private void updateAnimation(CallbackInfo ci) {
 		if (this.sleeping) return;
 		
-		ICustomMovementEntity customPlayer = (ICustomMovementEntity) this;
-		
-		BaseAnimation currentAnimation = customPlayer.lmm_$getAnimation();
-		
-		this.setSize(0.6f, currentAnimation.height);
+		this.setSize(0.6f, ((ICustomMovementEntity) this).lmm_$getAnimation().height);
 	}
 	
 	@Inject(method = "moveEntityWithHeading", at = @At("HEAD"), cancellable = true)
