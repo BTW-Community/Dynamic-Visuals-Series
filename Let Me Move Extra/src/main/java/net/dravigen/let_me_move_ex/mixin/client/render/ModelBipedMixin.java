@@ -47,7 +47,7 @@ public abstract class ModelBipedMixin extends ModelBase {
 			customEntity.lmm_$setOnGround(!boundingBoxes.isEmpty());
 		}
 		
-		if (!customEntity.lmm_$getOnGround() && !customEntity.lmm_$getIsFlying()) {
+		if (!customEntity.lmm_$getOnGround() && !customEntity.lmm_$getIsFlying() && !this.isRiding) {
 			if (player.posY > player.prevPosY) {
 				if (customEntity.lmm_$getPrevJumpTime() == -1) {
 					customEntity.lmm_$setPrevJumpTime(0);

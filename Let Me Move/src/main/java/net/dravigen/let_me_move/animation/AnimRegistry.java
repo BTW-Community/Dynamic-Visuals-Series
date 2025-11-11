@@ -14,26 +14,30 @@ public class AnimRegistry {
 	public final static BaseAnimation STANDING = new AnimStanding();
 	public final static BaseAnimation WALKING = new AnimWalking();
 	public final static BaseAnimation RUNNING = new AnimRunning();
+	public final static BaseAnimation RIDING = new AnimRiding();
 	
 	/**
 	 * Register the animations here, the higher the animation the higher the priority (will be checked first)
 	 */
 	public static void registerAllAnimation() {
-		//Poses
-		registerAnimation(LOW_FALLING, 100);
+		int i = 100;
 		
-		registerAnimation(HIGH_FALLING, 105);
+		registerAnimation(RIDING, i += 5);
 		
-		registerAnimation(GUI, 110);
+		registerAnimation(LOW_FALLING, i += 5);
 		
-		registerAnimation(CLIMBING, 115);
+		registerAnimation(HIGH_FALLING, i += 5);
 		
-		registerAnimation(CROUCHING, 120);
+		registerAnimation(GUI, i += 5);
 		
-		registerAnimation(RUNNING, 125);
+		registerAnimation(CLIMBING, i += 5);
 		
-		registerAnimation(WALKING, 130);
+		registerAnimation(CROUCHING, i += 5);
 		
-		registerAnimation(STANDING, 135);
+		registerAnimation(RUNNING, i += 5);
+		
+		registerAnimation(WALKING, i += 5);
+		
+		registerAnimation(STANDING, i += 5);
 	}
 }

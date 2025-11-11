@@ -117,10 +117,12 @@ public class AnimCommon extends BaseAnimation {
 		body[0] -= v0 * 0.5f;
 		body[2] -= v2 * 0.5f;
 		
-		head[4] += (sin(h / 8) + 0.65f) * 0.25f;
-		body[4] += (sin(h / 8) + 0.65f) * 0.25f;
-		rArm[4] += (sin(h / 8) + 0.65f) * 0.25f;
-		lArm[4] += (sin(h / 8) + 0.65f) * 0.25f;
+		float v3 = (sin(h / 8) + 0.65f) * 0.25f;
+		
+		head[4] += v3;
+		body[4] += v3;
+		rArm[4] += v3;
+		lArm[4] += v3;
 	}
 	
 	protected void moveAround(float h, float[] head, float[] rArm, float[] lArm, float[] rLeg,
@@ -162,7 +164,6 @@ public class AnimCommon extends BaseAnimation {
 		EntityPlayer player = (EntityPlayer) entity;
 		
 		ModelPartHolder partHolder = customEntity.lmm_$getParHolder();
-		//partHolder.resetAnimationRotationPoints();
 		
 		i = clampedI(i);
 		
@@ -184,7 +185,7 @@ public class AnimCommon extends BaseAnimation {
 		
 		MovementType movementType = GeneralUtils.getRelativeMovement(player);
 		
-		
+		double motionY = player.posY - player.prevPosY;
 		boolean isJumping = customEntity.lmm_$getJumpTime() > 0;
 		boolean isCrouching = model.isSneak || customEntity.lmm_$isAnimation(AnimCrouching.id);
 		boolean isFlying = customEntity.lmm_$getIsFlying();
@@ -195,10 +196,9 @@ public class AnimCommon extends BaseAnimation {
 		boolean bSprint = player.isSprinting();
 		boolean backward = movementType == MovementType.BACKWARD && straf == 0;
 		int jumpSwing = customEntity.lmm_$getJumpSwing();
-		double motionY = player.posY - player.prevPosY;
 		boolean isMoving = player.posX != player.prevPosX || player.posZ != player.prevPosZ;
 		
-		if (entity == Minecraft.getMinecraft().thePlayer) {
+		if (entity == Minecraft.getMinecraft().thePlayer && !entity.isRiding()) {
 			float yaw;
 			
 			if (isFlying) {
@@ -224,8 +224,7 @@ public class AnimCommon extends BaseAnimation {
 																 delta * 0.1f);
 			}
 		}
-		
-		float mul = 0.5f;
+		float mul = bSprint ? 0.525f : 0.5f;
 		
 		if (isFlying) {
 			backward = forw < 0;
@@ -315,8 +314,8 @@ public class AnimCommon extends BaseAnimation {
 					head[0] += body[0];
 					
 					
-					rArm[0] = (float) (jumpSwing * pi(1, 4) * g * (1 - motionY));
-					lArm[0] = (float) (-jumpSwing * pi(1, 4) * g * (1 - motionY));
+					rArm[0] = (float) (jumpSwing * pi(1, 3) * g * (1 - motionY));
+					lArm[0] = (float) (-jumpSwing * pi(1, 3) * g * (1 - motionY));
 					rLeg[0] = (float) (-jumpSwing * pi(1, 4) * g * (1 - motionY));
 					lLeg[0] = (float) (jumpSwing * pi(1, 4) * g * (1 - motionY));
 					
@@ -375,8 +374,8 @@ public class AnimCommon extends BaseAnimation {
 			g = player.inWater ? 0.5f : g;
 			
 			if (isMoving) {
-				rArm[0] = cos(f * mul) * 2.0F * g * (bSprint ? 0.75f : 0.5F) / k;
-				lArm[0] = cos(f * mul + pi) * 2.0F * g * (bSprint ? 0.75f : 0.5F) / k;
+				rArm[0] = cos(f * mul) * 2.0F * g * (bSprint ? 0.8f : 0.5F) / k;
+				lArm[0] = cos(f * mul + pi) * 2.0F * g * (bSprint ? 0.8f : 0.5F) / k;
 				
 				body[0] = (cos(f * mul * 2) + 1) * g * (bSprint ? 0.1f : 0) / k + (bSprint ? pi(1, 32) : 0);
 				body[1] = cos(f * mul) * g * (bSprint ? 0.0f : backward ? 0.5f : 0.3F) * (isCrouching ? 0.25f : 1) / k;
@@ -415,21 +414,21 @@ public class AnimCommon extends BaseAnimation {
 				lArm[4] = 12 - cos(body[0]) * 10;
 				lArm[5] = -sin(body[1]) * 5.0F - sin(body[0]) * 12;
 				rLeg[3] = -cos(body[1]) * 2f;
-				rLeg[4] = Math.max((sin(f * mul) - 1) * g * (bSprint ? 1.75f : 1.3f) + 12,
+				rLeg[4] = Math.max((sin(f * mul) - 1) * g * (bSprint ? 2f : 1.3f) + 12,
 								   (bSprint ? 6 : 8));
 				rLeg[5] = -sin(body[1]) * 2f;
 				lLeg[3] = cos(body[1]) * 2f;
-				lLeg[4] = Math.max((sin(f * mul + pi) - 1) * g * (bSprint ? 1.75f : 1.3f) + 12,
+				lLeg[4] = Math.max((sin(f * mul + pi) - 1) * g * (bSprint ? 2f : 1.3f) + 12,
 								   (bSprint ? 6 : 8));
 				lLeg[5] = sin(body[1]) * 2f;
 				
-				rArm[1] += body[1] + (bSprint ? cos(f * mul) * pi(1, 12) : 0);
-				lArm[1] += body[1] + (bSprint ? cos(f * mul) * pi(1, 12) : 0);
+				rArm[1] += body[1] + (bSprint ? cos(f * mul) * pi(1, 8) : 0);
+				lArm[1] += body[1] + (bSprint ? cos(f * mul) * pi(1, 8) : 0);
 				head[0] += body[0];
 				//head[1] += -body[1] / 3;
 				
 				float v = 2f;
-				float v1 = bSprint ? 3 : backward ? 0.2f : 2f;
+				float v1 = bSprint ? 3.5f : backward ? 0.2f : 2f;
 				float v2 = Math.min(cos(f * mul * v) * g * v1, 2);
 				
 				head[4] -= v2;
@@ -464,6 +463,31 @@ public class AnimCommon extends BaseAnimation {
 		}
 		
 		this.swingArm(model, body, rArm, lArm, head);
+		if (model.isRiding) {
+			Entity mount = entity.ridingEntity;
+			
+			if (mount instanceof EntityMinecart minecart) {
+				rLeg[4] = 4;
+				lLeg[4] = 4;
+				rLeg[5] = -6;
+				lLeg[5] = -6;
+				AnimationUtils.offsetAllRotationPoints(0, 0, 5, head, rArm, lArm, rLeg, lLeg, body);
+				rArm[0] -= pi(2, 5);
+				lArm[0] -= pi(2, 5);
+				rArm[1] -= pi(1, 8);
+				lArm[1] += pi(1, 8);
+				rLeg[0] = -pi(1, 8);
+				lLeg[0] = -pi(1, 8);
+			}
+			else {
+				rArm[0] -= 0.62831855f;
+				lArm[0] -= 0.62831855f;
+				rLeg[0] -= 1.2566371f;
+				lLeg[0] -= 1.2566371f;
+				rLeg[1] += 0.31415927f;
+				lLeg[1] -= 0.31415927f;
+			}
+		}
 		
 		if (isCrouching && !isFlying) {
 			body[0] = 0.5F;
