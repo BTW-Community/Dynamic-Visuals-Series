@@ -9,6 +9,7 @@ import net.minecraft.src.*;
 
 import static net.dravigen.dranimation_lib.utils.GeneralUtils.*;
 
+@SuppressWarnings("unused")
 public class AnimCommon extends BaseAnimation {
 	public AnimCommon(ResourceLocation id, float height, float speedModifier, boolean needYOffsetUpdate,
 			int maxCooldown, int duration, boolean shouldAutoUpdate, float yOffset) {
@@ -185,7 +186,7 @@ public class AnimCommon extends BaseAnimation {
 		
 		
 		boolean isJumping = customEntity.lmm_$getJumpTime() > 0;
-		boolean isCrouching = model.isSneak || customEntity.lmm_$getAnimationID() == AnimCrouching.id;
+		boolean isCrouching = model.isSneak || customEntity.lmm_$isAnimation(AnimCrouching.id);
 		boolean isFlying = customEntity.lmm_$getIsFlying();
 		float forw = GeneralUtils.getMovementComponents(player)[0];
 		float straf = GeneralUtils.getMovementComponents(player)[1];

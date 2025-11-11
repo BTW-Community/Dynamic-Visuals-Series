@@ -6,6 +6,7 @@ import net.minecraft.src.ResourceLocation;
 
 import java.util.Map;
 
+@SuppressWarnings("unused")
 public interface ICustomMovementEntity {
 	float lmm_$getLeaningPitch(float tickDelta);
 	
@@ -63,11 +64,21 @@ public interface ICustomMovementEntity {
 	
 	float[] lmm_$getRenderRotOff();
 	
+	void lmm_$setCapeRot(int index, float rot);
+	
 	float[] lmm_$getCapeRot();
 	
 	void lmm_$setDelta(float delta);
 	
 	float lmm_$getDelta();
+	
+	void lmm_$setLimbSwing(float[] limbs);
+	
+	float[] lmm_$getLimbSwing();
+	
+	void lmm_$setPrevLimbSwing(float[] limbs);
+	
+	float[] lmm_$getPrevLimbSwing();
 	
 	enum side {
 		LEFT,

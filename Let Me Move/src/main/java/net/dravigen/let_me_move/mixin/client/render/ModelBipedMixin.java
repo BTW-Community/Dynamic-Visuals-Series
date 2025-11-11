@@ -7,11 +7,12 @@ import net.dravigen.dranimation_lib.interfaces.ICustomMovementEntity;
 import net.dravigen.dranimation_lib.utils.AnimationUtils;
 import net.dravigen.dranimation_lib.utils.GeneralUtils;
 import net.dravigen.let_me_move.LetMeMoveAddon;
+import net.dravigen.let_me_move.animation.player.poses.AnimClimbing;
+import net.dravigen.let_me_move.animation.player.poses.AnimHighFalling;
 import net.minecraft.src.*;
 import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
@@ -19,13 +20,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
 
-import static net.dravigen.let_me_move.animation.AnimRegistry.*;
-
 @Mixin(ModelBiped.class)
 public abstract class ModelBipedMixin extends ModelBase {
 	@Shadow public ModelRenderer bipedCloak;
-	@Unique
-	long prevTime;
 	
 	@Inject(method = "render", at = @At("HEAD"))
 	private void rotateBody(Entity entity, float f, float g, float h, float i, float j, float u, CallbackInfo ci) {
@@ -74,10 +71,7 @@ public abstract class ModelBipedMixin extends ModelBase {
 		
 		float leaningPitch = customEntity.lmm_$getLeaningPitch(Minecraft.getMinecraft().getTimer().renderPartialTicks);
 		
-		float delta = (System.currentTimeMillis() - this.prevTime) / 25f;
-		delta = delta > 8 ? 8 : delta;
-		
-		AnimationUtils.delta = delta;
+		float delta = AnimationUtils.delta;
 		
 		float prevXRotation;
 		float prevYRotation;
@@ -87,7 +81,7 @@ public abstract class ModelBipedMixin extends ModelBase {
 		float[] renderRotOff = customEntity.lmm_$getRenderRotOff();
 		
 		if (animation.needYOffsetUpdate) {
-			if (customEntity.lmm_$isAnimation(HIGH_FALLING.getID())) {
+			if (customEntity.lmm_$isAnimation(AnimHighFalling.id)) {
 				prevOffset = GeneralUtils.incrementUntilGoal(renderRotOff[0], 0.5f, 0.4f * delta);
 				prevYRotation = GeneralUtils.incrementAngleUntilGoal(renderRotOff[2],
 																	 (12f * leaningPitch) % 360,
@@ -118,15 +112,13 @@ public abstract class ModelBipedMixin extends ModelBase {
 		
 		customEntity.lmm_$setRenderRotOff(newRenderRotOff);
 		
-		this.prevTime = System.currentTimeMillis();
-		
 		GL11.glTranslatef(0, prevOffset, 0);
 		GL11.glRotatef(prevYRotation, 0, 1, 0);
 		GL11.glRotatef(prevZRotation, 0, 0, 1);
 		GL11.glRotatef(prevXRotation, 1, 0, 0);
 		
-		if (customEntity.lmm_$isAnimation(HIGH_FALLING.getID())) GL11.glTranslatef(0, -prevOffset, 0);
-		else if (customEntity.lmm_$isAnimation(CLIMBING.getID())) {
+		if (customEntity.lmm_$isAnimation(AnimHighFalling.id)) GL11.glTranslatef(0, -prevOffset, 0);
+		else if (customEntity.lmm_$isAnimation(AnimClimbing.id)) {
 			int x = MathHelper.floor_double(entity.posX);
 			int y = MathHelper.floor_double(entity.boundingBox.minY);
 			int z = MathHelper.floor_double(entity.posZ);
@@ -164,6 +156,17 @@ public abstract class ModelBipedMixin extends ModelBase {
 		ci.cancel();
 		
 		if (entity instanceof EntityPlayer player) {
+			Minecraft mc = Minecraft.getMinecraft();
+			if (player != mc.thePlayer) {
+				f = GeneralUtils.lerpF(mc.getTimer().renderPartialTicks, customEntity.lmm_$getPrevLimbSwing()[0], customEntity.lmm_$getLimbSwing()[0]) ;
+				g = GeneralUtils.lerpF(mc.getTimer().renderPartialTicks, customEntity.lmm_$getPrevLimbSwing()[1], customEntity.lmm_$getLimbSwing()[1]) ;
+				customEntity.lmm_$setPrevLimbSwing(new float[]{f, g});
+			}
+			else {
+				customEntity.lmm_$setLimbSwing(new float[]{f, g});
+			}
+			
+			
 			customEntity.lmm_$getAnimation()
 					.renderAnimation((ModelBiped) (Object) this,
 									 player,

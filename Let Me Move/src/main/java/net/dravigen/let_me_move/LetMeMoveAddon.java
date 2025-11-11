@@ -6,7 +6,7 @@ import btw.world.util.data.DataEntry;
 import btw.world.util.data.DataProvider;
 import net.dravigen.dranimation_lib.utils.AnimationUtils;
 import net.dravigen.let_me_move.animation.AnimRegistry;
-import net.fabricmc.loader.api.FabricLoader;
+import net.dravigen.let_me_move.animation.player.poses.AnimStanding;
 import net.minecraft.src.*;
 
 public class LetMeMoveAddon extends BTWAddon {
@@ -14,7 +14,7 @@ public class LetMeMoveAddon extends BTWAddon {
 	private static final String CURRENT_ANIMATION_NAME = "CurrentAnimation";
 	public static final DataEntry.PlayerDataEntry<String> CURRENT_ANIMATION = DataProvider.getBuilder(String.class)
 			.name(CURRENT_ANIMATION_NAME)
-			.defaultSupplier(() -> String.valueOf(AnimRegistry.STANDING.getID()))
+			.defaultSupplier(() -> String.valueOf(AnimStanding.id))
 			.readNBT(NBTTagCompound::getString)
 			.writeNBT(NBTTagCompound::setString)
 			.player()
@@ -38,6 +38,6 @@ public class LetMeMoveAddon extends BTWAddon {
 	}
 	
 	public static boolean isExtraLoaded() {
-		return FabricLoader.getInstance().isModLoaded("let_me_move_ex") && AnimationUtils.extraIsPresent;
+		return AddonHandler.isModInstalled("let_me_move_ex") && AnimationUtils.extraIsPresent;
 	}
 }

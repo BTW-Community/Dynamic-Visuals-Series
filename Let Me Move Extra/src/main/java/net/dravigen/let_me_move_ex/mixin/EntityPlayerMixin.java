@@ -5,14 +5,13 @@ import net.dravigen.dranimation_lib.interfaces.ICustomMovementEntity;
 import net.dravigen.dranimation_lib.packet.PacketUtils;
 import net.dravigen.dranimation_lib.utils.AnimationUtils;
 import net.dravigen.dranimation_lib.utils.GeneralUtils;
+import net.dravigen.let_me_move_ex.animation.player.actions.AnimWallSliding;
 import net.minecraft.src.*;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import static net.dravigen.let_me_move_ex.animation.AnimRegistry.*;
 
 @Mixin(EntityPlayer.class)
 public abstract class EntityPlayerMixin extends EntityLivingBase {
@@ -84,7 +83,7 @@ public abstract class EntityPlayerMixin extends EntityLivingBase {
 	
 	@Inject(method = "jump", at = @At("TAIL"))
 	private void addHorizontalMotionFromJumpingOnWall(CallbackInfo ci) {
-		if (((ICustomMovementEntity) this).lmm_$isAnimation(WALL_SLIDING.getID()) && this.canJump()) {
+		if (((ICustomMovementEntity) this).lmm_$isAnimation(AnimWallSliding.id) && this.canJump()) {
 			GeneralUtils.coords side = GeneralUtils.getWallSide(this, 0, this.height);
 			this.motionY += 0.15;
 			this.motionX += side == GeneralUtils.coords.EAST ? -0.3f : side == GeneralUtils.coords.WEST ? 0.3f : 0;

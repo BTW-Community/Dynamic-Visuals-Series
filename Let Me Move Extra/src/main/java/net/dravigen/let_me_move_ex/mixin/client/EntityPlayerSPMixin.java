@@ -5,13 +5,14 @@ import net.dravigen.dranimation_lib.interfaces.ICustomMovementEntity;
 import net.dravigen.dranimation_lib.packet.PacketUtils;
 import net.dravigen.dranimation_lib.utils.AnimationUtils;
 import net.dravigen.dranimation_lib.utils.GeneralUtils;
+import net.dravigen.let_me_move.animation.player.poses.*;
+import net.dravigen.let_me_move_ex.animation.player.actions.AnimCrawling;
+import net.dravigen.let_me_move_ex.animation.player.actions.AnimDiving;
+import net.dravigen.let_me_move_ex.animation.player.actions.AnimSwimming;
 import net.minecraft.src.*;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import static net.dravigen.let_me_move_ex.animation.AnimRegistry.*;
-import static net.dravigen.let_me_move.animation.AnimRegistry.*;
 
 @Mixin(EntityPlayerSP.class)
 public abstract class EntityPlayerSPMixin extends AbstractClientPlayer {
@@ -59,7 +60,7 @@ public abstract class EntityPlayerSPMixin extends AbstractClientPlayer {
 				}
 			}
 			
-			newID = newID.equals(new ResourceLocation("")) ? STANDING.getID() : newID;
+			newID = newID.equals(new ResourceLocation("")) ? AnimStanding.id : newID;
 			
 			AxisAlignedBB bounds = new AxisAlignedBB(this.boundingBox.minX, this.boundingBox.minY, this.boundingBox.minZ, this.boundingBox.maxX, this.boundingBox.minY + customPlayer.lmm_$getAnimation().height, this.boundingBox.maxZ);
 			
@@ -79,20 +80,20 @@ public abstract class EntityPlayerSPMixin extends AbstractClientPlayer {
 				}
 				else {
 					if (!GeneralUtils.isEntityHeadInsideBlock(this, 0.41)) {
-						customPlayer.lmm_$setAnimation(CROUCHING.getID());
+						customPlayer.lmm_$setAnimation(AnimCrouching.id);
 					}
 					else {
-						customPlayer.lmm_$setAnimation(CRAWLING.getID());
+						customPlayer.lmm_$setAnimation(AnimCrawling.id);
 					}
 				}
 			}
 			else if (!this.worldObj.getCollidingBlockBounds(this.boundingBox).isEmpty() &&
 					!GeneralUtils.isEntityFeetInsideBlock(this)) {
 				if (this.capabilities.isFlying) {
-					customPlayer.lmm_$setAnimation(DIVING.getID());
+					customPlayer.lmm_$setAnimation(AnimDiving.id);
 				}
 				else {
-					customPlayer.lmm_$setAnimation(CRAWLING.getID());
+					customPlayer.lmm_$setAnimation(AnimCrawling.id);
 				}
 			}
 		}
@@ -107,11 +108,11 @@ public abstract class EntityPlayerSPMixin extends AbstractClientPlayer {
 	private boolean disableSprintOnCrawl(EntityPlayerSP instance) {
 		ICustomMovementEntity customEntity = (ICustomMovementEntity) instance;
 		if (instance.isSneaking() ||
-				!(customEntity.lmm_$isAnimation(RUNNING.getID()) ||
-						customEntity.lmm_$isAnimation(WALKING.getID()) ||
-						customEntity.lmm_$isAnimation(STANDING.getID()) ||
-						customEntity.lmm_$isAnimation(SWIMMING.getID()) ||
-						customEntity.lmm_$isAnimation(LOW_FALLING.getID()))) {
+				!(customEntity.lmm_$isAnimation(AnimRunning.id) ||
+						customEntity.lmm_$isAnimation(AnimWalking.id) ||
+						customEntity.lmm_$isAnimation(AnimStanding.id) ||
+						customEntity.lmm_$isAnimation(AnimSwimming.id) ||
+						customEntity.lmm_$isAnimation(AnimLowFalling.id))) {
 			instance.setSprinting(false);
 			
 			return true;

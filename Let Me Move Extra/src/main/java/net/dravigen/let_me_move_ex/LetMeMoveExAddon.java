@@ -30,6 +30,7 @@ public class LetMeMoveExAddon extends BTWAddon {
 		if (!MinecraftServer.getIsServer()) {
 			initKeybind();
 		}
+		
 		AnimRegistry.registerAllAnimation();
 		AddonHandler.logMessage(this.getName() + " Version " + this.getVersionString() + " Initializing...");
 	}

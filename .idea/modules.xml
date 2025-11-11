@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/DraNimationLib.main.iml" filepath="$PROJECT_DIR$/.idea/modules/DraNimationLib.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/DraNimationLib.test.iml" filepath="$PROJECT_DIR$/.idea/modules/DraNimationLib.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/DraNimation_Lib.main.iml" filepath="$PROJECT_DIR$/.idea/modules/DraNimation_Lib.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/DraNimation_Lib.test.iml" filepath="$PROJECT_DIR$/.idea/modules/DraNimation_Lib.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/Let Me Move Series.iml" filepath="$PROJECT_DIR$/.idea/Let Me Move Series.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Let_Me_Move_!.main.iml" filepath="$PROJECT_DIR$/.idea/modules/Let_Me_Move_!.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Let_Me_Move_!.test.iml" filepath="$PROJECT_DIR$/.idea/modules/Let_Me_Move_!.test.iml" />

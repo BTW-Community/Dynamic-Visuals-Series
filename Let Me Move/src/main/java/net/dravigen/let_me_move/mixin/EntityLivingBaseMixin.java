@@ -7,6 +7,7 @@ import net.dravigen.dranimation_lib.utils.AnimationUtils;
 import net.dravigen.dranimation_lib.utils.GeneralUtils;
 import net.dravigen.dranimation_lib.utils.ModelPartHolder;
 import net.dravigen.let_me_move.LetMeMoveAddon;
+import net.dravigen.let_me_move.animation.player.poses.AnimStanding;
 import net.minecraft.src.*;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -15,8 +16,6 @@ import org.spongepowered.asm.mixin.injection.*;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static net.dravigen.let_me_move.animation.AnimRegistry.*;
 
 @Mixin(EntityLivingBase.class)
 public abstract class EntityLivingBaseMixin extends Entity implements ICustomMovementEntity {
@@ -51,6 +50,10 @@ public abstract class EntityLivingBaseMixin extends Entity implements ICustomMov
 	private float[] capeRot = new float[]{0, 0, 0};
 	@Unique
 	private float renderDelta = 1;
+	@Unique
+	private float[] limbSwing = new float[]{0, 0};
+	@Unique
+	private float[] prevLimbSwing = new float[]{0, 0};
 	
 	public EntityLivingBaseMixin(World par1World) {
 		super(par1World);
@@ -86,7 +89,7 @@ public abstract class EntityLivingBaseMixin extends Entity implements ICustomMov
 	@Override
 	public BaseAnimation lmm_$getAnimation() {
 		if ((EntityLivingBase) (Object) this instanceof EntityPlayer) {
-			if (this.currentAnimation == null) this.currentAnimation = STANDING.getID();
+			if (this.currentAnimation == null) this.currentAnimation = AnimStanding.id;
 			
 			return AnimationUtils.getAnimationFromID(this.currentAnimation);
 		}
@@ -239,6 +242,11 @@ public abstract class EntityLivingBaseMixin extends Entity implements ICustomMov
 	}
 	
 	@Override
+	public void lmm_$setCapeRot(int i, float v) {
+		this.capeRot[i] = v;
+	}
+	
+	@Override
 	public float lmm_$getDelta() {
 		return this.renderDelta;
 	}
@@ -248,6 +256,25 @@ public abstract class EntityLivingBaseMixin extends Entity implements ICustomMov
 		this.renderDelta = delta;
 	}
 	
+	@Override
+	public float[] lmm_$getLimbSwing() {
+		return limbSwing;
+	}
+	
+	@Override
+	public void lmm_$setLimbSwing(float[] floats) {
+		this.limbSwing = floats;
+	}
+	
+	@Override
+	public float[] lmm_$getPrevLimbSwing() {
+		return this.prevLimbSwing;
+	}
+	
+	@Override
+	public void lmm_$setPrevLimbSwing(float[] floats) {
+		this.prevLimbSwing = floats;
+	}
 	
 	@Redirect(method = "onUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/src/EntityLivingBase;func_110146_f(FF)F"))
 	private float disableHeadTurn(EntityLivingBase instance, float par1, float par2) {

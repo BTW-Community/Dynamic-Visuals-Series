@@ -5,13 +5,14 @@ import net.dravigen.dranimation_lib.interfaces.ICustomMovementEntity;
 import net.dravigen.dranimation_lib.packet.PacketUtils;
 import net.dravigen.dranimation_lib.utils.AnimationUtils;
 import net.dravigen.let_me_move.LetMeMoveAddon;
+import net.dravigen.let_me_move.animation.player.poses.AnimCrouching;
+import net.dravigen.let_me_move.animation.player.poses.AnimStanding;
 import net.minecraft.src.*;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static net.dravigen.let_me_move.animation.AnimRegistry.*;
 
 @Mixin(EntityPlayerSP.class)
 public abstract class EntityPlayerSPMixin extends AbstractClientPlayer {
@@ -47,7 +48,7 @@ public abstract class EntityPlayerSPMixin extends AbstractClientPlayer {
 			}
 		}
 		
-		newID = newID.equals(new ResourceLocation("")) ? STANDING.getID() : newID;
+		newID = newID.equals(new ResourceLocation("")) ? AnimStanding.id : newID;
 		
 		if (!newID.equals(customPlayer.lmm_$getAnimationID())) {
 			customPlayer.lmm_$setAnimation(newID);
@@ -61,6 +62,6 @@ public abstract class EntityPlayerSPMixin extends AbstractClientPlayer {
 	
 	@Redirect(method = "onLivingUpdate", at = @At(value = "FIELD", target = "Lnet/minecraft/src/MovementInput;sneak:Z", ordinal = 0, opcode = Opcodes.GETFIELD))
 	private boolean disableVanillaSneakLowerCamera(MovementInput instance) {
-		return ((ICustomMovementEntity) this).lmm_$isAnimation(CROUCHING.getID());
+		return ((ICustomMovementEntity) this).lmm_$isAnimation(AnimCrouching.id);
 	}
 }

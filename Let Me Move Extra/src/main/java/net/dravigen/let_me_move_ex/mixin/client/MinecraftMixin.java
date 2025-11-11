@@ -3,6 +3,7 @@ package net.dravigen.let_me_move_ex.mixin.client;
 import net.dravigen.dranimation_lib.interfaces.ICustomMovementEntity;
 import net.dravigen.dranimation_lib.utils.AnimationUtils;
 import net.dravigen.dranimation_lib.utils.GeneralUtils;
+import net.dravigen.let_me_move_ex.animation.player.actions.AnimRolling;
 import net.minecraft.src.*;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -10,8 +11,6 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import static net.dravigen.let_me_move_ex.animation.AnimRegistry.ROLLING;
 
 @Mixin(Minecraft.class)
 public abstract class MinecraftMixin {
@@ -26,6 +25,8 @@ public abstract class MinecraftMixin {
 	public GameSettings gameSettings;
 	@Shadow
 	private boolean isGamePaused;
+	@Unique
+	private long prevTime = 0;
 	
 	@Shadow public abstract Timer getTimer();
 	
@@ -35,15 +36,23 @@ public abstract class MinecraftMixin {
 			AnimationUtils.extraIsPresent = false;
 		}
 		
+		long t = System.currentTimeMillis();
+		float delta = (t - this.prevTime) / 25f;
+		this.prevTime = t;
+		
+		delta = delta > 8 ? 8 : delta;
+		
+		AnimationUtils.delta = delta;
+		
 		if (!AnimationUtils.extraIsPresent) return;
 		
 		EntityPlayer player = this.thePlayer;
 		ICustomMovementEntity customPlayer = (ICustomMovementEntity) player;
 		
 		if (!this.isGamePaused && player != null) {
-			player.yOffset = GeneralUtils.incrementUntilGoal(player.yOffset, player.height - 0.18f, 0.4f * AnimationUtils.delta);
+			player.yOffset = GeneralUtils.incrementUntilGoal(player.yOffset, player.height - 0.18f, 0.4f * delta);
 			
-			if (customPlayer.lmm_$isAnimation(ROLLING.getID()) && this.gameSettings.thirdPersonView == 0) {
+			if (customPlayer.lmm_$isAnimation(AnimRolling.id) && this.gameSettings.thirdPersonView == 0) {
 				float leaning = customPlayer.lmm_$getLeaningPitch(this.getTimer().renderPartialTicks);
 				
 				if (leaning == 0) {

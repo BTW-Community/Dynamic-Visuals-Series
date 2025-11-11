@@ -2,14 +2,15 @@ package net.dravigen.let_me_move_ex.mixin;
 
 import net.dravigen.dranimation_lib.interfaces.ICustomMovementEntity;
 import net.dravigen.dranimation_lib.utils.AnimationUtils;
+import net.dravigen.let_me_move.animation.player.poses.AnimHighFalling;
+import net.dravigen.let_me_move_ex.animation.player.actions.AnimRolling;
+import net.dravigen.let_me_move_ex.animation.player.actions.AnimSkyDiving;
+import net.dravigen.let_me_move_ex.animation.player.actions.AnimWallSliding;
 import net.minecraft.src.*;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import static net.dravigen.let_me_move_ex.animation.AnimRegistry.*;
-import static net.dravigen.let_me_move.animation.AnimRegistry.*;
 
 @Mixin(EntityLivingBase.class)
 public abstract class EntityLivingBaseMixin extends Entity implements ICustomMovementEntity {
@@ -37,7 +38,7 @@ public abstract class EntityLivingBaseMixin extends Entity implements ICustomMov
 		if (this.lmm_$getAnimation() == null) return par1;
 		
 		if ((EntityLivingBase) (Object) this instanceof EntityPlayer player && !player.capabilities.isFlying) {
-			if (this.lmm_$isAnimation(SKY_DIVING.getID())) {
+			if (this.lmm_$isAnimation(AnimSkyDiving.id)) {
 				if (this.moveForward == 0) {
 					this.motionY *= 0.96;
 				}
@@ -47,19 +48,19 @@ public abstract class EntityLivingBaseMixin extends Entity implements ICustomMov
 				
 				return this.lmm_$getAnimation().speedModifier;
 			}
-			else if (this.lmm_$isAnimation(HIGH_FALLING.getID())) {
+			else if (this.lmm_$isAnimation(AnimHighFalling.id)) {
 				this.motionY *= 0.98;
 				
 				return this.lmm_$getAnimation().speedModifier;
 			}
-			else if (this.lmm_$isAnimation(DIVING.getID())) {
+			else if (this.lmm_$isAnimation(AnimSkyDiving.id)) {
 				if (this.motionY < 0) {
 					this.motionY *= 1.02;
 				}
 				
 				return this.lmm_$getAnimation().speedModifier;
 			}
-			else if (this.lmm_$isAnimation(WALL_SLIDING.getID())) {
+			else if (this.lmm_$isAnimation(AnimWallSliding.id)) {
 				this.motionY *= 0.85;
 				
 				if (fallDistance > 4) {
@@ -79,7 +80,7 @@ public abstract class EntityLivingBaseMixin extends Entity implements ICustomMov
 	
 	@Redirect(method = "onLivingUpdate", at = @At(value = "FIELD", target = "Lnet/minecraft/src/EntityLivingBase;onGround:Z"))
 	private boolean allowJumpWhileWallSliding(EntityLivingBase instance) {
-		if (((ICustomMovementEntity) instance).lmm_$isAnimation(WALL_SLIDING.getID())) {
+		if (((ICustomMovementEntity) instance).lmm_$isAnimation(AnimWallSliding.id)) {
 			return true;
 		}
 		
@@ -91,7 +92,7 @@ public abstract class EntityLivingBaseMixin extends Entity implements ICustomMov
 		if ((EntityLivingBase) (Object) this instanceof EntityPlayer) {
 			int t = this.lmm_$getTimeRendered();
 			
-			if (this.lmm_$isAnimation(ROLLING.getID()) && t >= 10 && t <= 20) {
+			if (this.lmm_$isAnimation(AnimRolling.id) && t >= 10 && t <= 20) {
 				return damage * 0.85f;
 			}
 		}

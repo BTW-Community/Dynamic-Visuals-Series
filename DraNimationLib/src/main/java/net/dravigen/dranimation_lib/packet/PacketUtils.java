@@ -9,6 +9,7 @@ import net.minecraft.src.*;
 import java.io.*;
 import java.util.Map;
 
+@SuppressWarnings("unused")
 public class PacketUtils {
 	public static final String ANIMATION_SYNC_CHANNEL = "LMM:AnimIDSync";
 	public static final String ANIMATION_DATA_SYNC_CHANNEL = "LMM:AnimDataSync";
@@ -104,6 +105,7 @@ public class PacketUtils {
 		int timeRendered = customPlayer.lmm_$getTimeRendered();
 		boolean isOnGround = customPlayer.lmm_$getOnGround();
 		boolean isFlying = customPlayer.lmm_$getIsFlying();
+		float[] limbs = new float[]{player.limbSwing, player.limbSwingAmount, player.prevLimbSwingAmount};
 		
 		try {
 			dos.writeUTF(ID.getResourceDomain());
@@ -112,6 +114,10 @@ public class PacketUtils {
 			dos.writeInt(timeRendered);
 			dos.writeBoolean(isOnGround);
 			dos.writeBoolean(isFlying);
+			
+			for (int i = 0; i < 2; i++) {
+				dos.writeFloat(limbs[i]);
+			}
 			
 			for (Map.Entry<ResourceLocation, Integer> animation : customPlayer.lmm_$getAllCooldown().entrySet()) {
 				dos.writeUTF(animation.getKey().getResourceDomain());
@@ -138,6 +144,11 @@ public class PacketUtils {
 			int timeRendered = dis.readInt();
 			boolean onGround = dis.readBoolean();
 			boolean isFlying = dis.readBoolean();
+			float[] limbs = new float[]{0, 0};
+			
+			for (int i = 0; i < 2; i++) {
+				limbs[i] = dis.readFloat();
+			}
 			
 			ICustomMovementEntity customPlayer = (ICustomMovementEntity) player;
 			
@@ -146,6 +157,7 @@ public class PacketUtils {
 			customPlayer.lmm_$setTimeRendered(timeRendered);
 			customPlayer.lmm_$setOnGround(onGround);
 			customPlayer.lmm_$setIsFlying(isFlying);
+			customPlayer.lmm_$setLimbSwing(limbs);
 			
 			for (int i = 0; i < Short.MAX_VALUE; i++) {
 				try {
@@ -178,6 +190,7 @@ public class PacketUtils {
 			int timeRendered = customPlayer.lmm_$getTimeRendered();
 			boolean onGround = customPlayer.lmm_$getOnGround();
 			boolean isFlying = customPlayer.lmm_$getIsFlying();
+			float[] limbs = customPlayer.lmm_$getLimbSwing();
 			
 			try {
 				dos.writeInt(entityID);
@@ -187,6 +200,10 @@ public class PacketUtils {
 				dos.writeInt(timeRendered);
 				dos.writeBoolean(onGround);
 				dos.writeBoolean(isFlying);
+				
+				for (int i = 0; i < 2; i++) {
+					dos.writeFloat(limbs[i]);
+				}
 				
 				for (Map.Entry<ResourceLocation, Integer> animation : customPlayer.lmm_$getAllCooldown().entrySet()) {
 					dos.writeUTF(animation.getKey().getResourceDomain());
@@ -216,6 +233,11 @@ public class PacketUtils {
 			int timeRendered = dis.readInt();
 			boolean onGround = dis.readBoolean();
 			boolean isFlying = dis.readBoolean();
+			float[] limbs = new float[]{0, 0};
+			
+			for (int i = 0; i < 2; i++) {
+				limbs[i] = dis.readFloat();
+			}
 			
 			Entity entity = getEntityByID(entityID);
 			
@@ -227,6 +249,7 @@ public class PacketUtils {
 				customPlayer.lmm_$setTimeRendered(timeRendered);
 				customPlayer.lmm_$setOnGround(onGround);
 				customPlayer.lmm_$setIsFlying(isFlying);
+				customPlayer.lmm_$setLimbSwing(limbs);
 				
 				for (int i = 0; i < Short.MAX_VALUE; i++) {
 					try {
@@ -243,6 +266,7 @@ public class PacketUtils {
 			throw new RuntimeException(e);
 		}
 	}
+	
 	
 	public static void sendExtraIsPresent(EntityPlayerMP player, boolean present) {
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
