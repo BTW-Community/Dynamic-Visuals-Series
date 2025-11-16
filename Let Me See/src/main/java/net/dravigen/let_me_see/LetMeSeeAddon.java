@@ -4,15 +4,15 @@ import btw.AddonHandler;
 import btw.BTWAddon;
 
 public class LetMeSeeAddon extends BTWAddon {
-
-    public static boolean enable3DFirstPerson = true;
-    
-    public LetMeSeeAddon() {
-        super();
-    }
-
-    @Override
-    public void initialize() {
-        AddonHandler.logMessage(this.getName() + " Version " + this.getVersionString() + " Initializing...");
-    }
+	
+	public static boolean enable3DFirstPerson = true;
+	
+	public LetMeSeeAddon() {
+		super();
+	}
+	
+	@Override
+	public void initialize() {
+		AddonHandler.logMessage(this.getName() + " Version " + this.getVersionString() + " Initializing...");
+	}
 }

@@ -65,7 +65,7 @@ public abstract class ModelBipedMixin extends ModelBase {
 		}
 		
 		BaseAnimation animation = customEntity.lmm_$getAnimation();
-
+		
 		if (animation == null) return;
 		
 		float leaningPitch = customEntity.lmm_$getLeaningPitch(Minecraft.getMinecraft().getTimer().renderPartialTicks);
@@ -96,8 +96,11 @@ public abstract class ModelBipedMixin extends ModelBase {
 				prevOffset = animation.yOffset != 0 ? animation.yOffset : 1.98f - entity.height;
 				prevYRotation = GeneralUtils.incrementAngleUntilGoal(renderRotOff[2], 0, 0.1f * delta);
 				prevZRotation = GeneralUtils.incrementAngleUntilGoal(renderRotOff[3], 0, 0.1f * delta);
-				prevXRotation = GeneralUtils.incrementAngleUntilGoal(renderRotOff[1], 90 * leaningPitch, (customEntity.lmm_$isAnimation(
-						AnimCrawling.id) ? 0.5f : 0.2f) * delta);
+				prevXRotation = GeneralUtils.incrementAngleUntilGoal(renderRotOff[1],
+																	 90 * leaningPitch,
+																	 (customEntity.lmm_$isAnimation(AnimCrawling.id)
+																	  ? 0.5f
+																	  : 0.2f) * delta);
 			}
 		}
 		else {

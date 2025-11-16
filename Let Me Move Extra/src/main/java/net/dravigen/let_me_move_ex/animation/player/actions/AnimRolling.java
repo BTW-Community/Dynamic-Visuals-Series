@@ -4,10 +4,10 @@ import net.dravigen.dranimation_lib.interfaces.ICustomMovementEntity;
 import net.dravigen.dranimation_lib.utils.AnimationUtils;
 import net.dravigen.dranimation_lib.utils.ModelPartHolder;
 import net.minecraft.src.*;
-import net.dravigen.let_me_move.animation.player.poses.AnimCommon;
 
+import static net.dravigen.dranimation_lib.utils.GeneralUtils.checkIfEntityFacingWall;
+import static net.dravigen.dranimation_lib.utils.GeneralUtils.pi;
 import static net.dravigen.let_me_move_ex.LetMeMoveExAddon.roll_key;
-import static net.dravigen.dranimation_lib.utils.GeneralUtils.*;
 
 public class AnimRolling extends AnimBaseAction {
 	public static final ResourceLocation id = new ResourceLocation("LMM", "rolling");
@@ -43,7 +43,7 @@ public class AnimRolling extends AnimBaseAction {
 		float[] lArm = new float[]{0, 0, 0, 5, 2, 0};
 		float[] rLeg = new float[]{0, 0, 0, -1.9f, 12, 0.1f};
 		float[] lLeg = new float[]{0, 0, 0, 1.9f, 12, 0.1f};
-	
+		
 		int t = customEntity.lmm_$getTimeRendered();
 		
 		if (t < 10) {
@@ -135,9 +135,10 @@ public class AnimRolling extends AnimBaseAction {
 		}
 		player.motionY = !(!player.worldObj.isRemote ||
 				player.worldObj.blockExists((int) player.posX, 0, (int) player.posZ) &&
-						player.worldObj.getChunkFromBlockCoords((int) player.posX, (int) player.posZ).isChunkLoaded)
-						 ? (player.posY > 0.0 ? -0.1 : 0.0)
-						 : (player.motionY -= 0.08);
+						player.worldObj.getChunkFromBlockCoords((int) player.posX, (int) player.posZ).isChunkLoaded) ? (
+								 player.posY > 0.0
+								 ? -0.1
+								 : 0.0) : (player.motionY -= 0.08);
 		player.motionY *= 0.98f;
 		player.motionX *= var3;
 		player.motionZ *= var3;

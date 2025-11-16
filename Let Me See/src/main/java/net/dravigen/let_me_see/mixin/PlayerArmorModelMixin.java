@@ -17,7 +17,8 @@ public abstract class PlayerArmorModelMixin extends ModelBiped {
 		
 		if (LetMeSeeAddon.enable3DFirstPerson &&
 				entity == mc.thePlayer &&
-				mc.gameSettings.thirdPersonView == 0 && !(mc.currentScreen instanceof GuiContainerCreative || mc.currentScreen instanceof GuiInventory)) {
+				mc.gameSettings.thirdPersonView == 0 &&
+				!(mc.currentScreen instanceof GuiContainerCreative || mc.currentScreen instanceof GuiInventory)) {
 			this.bipedBody.showModel = entity.height > 1.4;
 			this.bipedHead.showModel = false;
 			

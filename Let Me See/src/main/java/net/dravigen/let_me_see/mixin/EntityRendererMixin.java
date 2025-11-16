@@ -4,17 +4,18 @@ import net.dravigen.dranimation_lib.utils.AnimationUtils;
 import net.dravigen.let_me_see.LetMeSeeAddon;
 import net.minecraft.src.*;
 import org.lwjgl.opengl.GL11;
-import org.spongepowered.asm.mixin.*;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static net.dravigen.dranimation_lib.utils.GeneralUtils.*;
+import static net.dravigen.dranimation_lib.utils.GeneralUtils.incrementUntilGoal;
 
 @Mixin(EntityRenderer.class)
 public abstract class EntityRendererMixin {
-	@Shadow private Minecraft mc;
 	@Unique
 	float strafAngle = 0;
 	@Unique
@@ -23,6 +24,8 @@ public abstract class EntityRendererMixin {
 	float frowAngle = 0;
 	@Unique
 	float prevYaw = 0;
+	@Shadow
+	private Minecraft mc;
 	
 	@Redirect(method = "setupViewBobbing", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL11;glRotatef(FFFF)V", ordinal = 0))
 	private void customBobbingRoll(float angle, float x, float y, float z) {

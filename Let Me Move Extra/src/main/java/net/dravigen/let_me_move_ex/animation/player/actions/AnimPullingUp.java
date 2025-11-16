@@ -4,7 +4,6 @@ import net.dravigen.dranimation_lib.interfaces.ICustomMovementEntity;
 import net.dravigen.dranimation_lib.utils.AnimationUtils;
 import net.dravigen.dranimation_lib.utils.ModelPartHolder;
 import net.minecraft.src.*;
-import net.dravigen.let_me_move.animation.player.poses.AnimCommon;
 
 import static net.dravigen.dranimation_lib.utils.GeneralUtils.*;
 
@@ -117,34 +116,6 @@ public class AnimPullingUp extends AnimBaseAction {
 	}
 	
 	@Override
-	public void updateAnimationTime(ResourceLocation currentAnimation, EntityLivingBase player) {
-		ICustomMovementEntity customPlayer = (ICustomMovementEntity) player;
-		
-		if (currentAnimation.equals(this.getID())) {
-			customPlayer.lmm_$setTimeRendered(MathHelper.floor_double((2 -
-					((yBlockAboveWall + 0.1) - player.boundingBox.minY)) * this.totalDuration / 2));
-			
-			int timeRendered = customPlayer.lmm_$getTimeRendered();
-			
-			if (player.isEating() ||
-					player.onGround ||
-					timeRendered < 0 ||
-					((EntityPlayer) player).doesStatusPreventSprinting() ||
-					!player.isSneaking() ||
-					timeRendered < 35 &&
-							(getWallSide(player, 0, player.height) == null || getWallTopYIfEmptySpace(player) == -1)) {
-				this.startCooldown(customPlayer);
-			}
-		}
-		
-		int cooldown = customPlayer.lmm_$getCooldown(id);
-		
-		if (cooldown > 0) {
-			customPlayer.lmm_$setCooldown(cooldown - 1, id);
-		}
-	}
-	
-	@Override
 	public boolean getHungerCost(EntityPlayer player, double distX, double distY, double distZ) {
 		player.addExhaustion(1.33f / 100f * getHungerDifficultyMultiplier(player));
 		
@@ -196,5 +167,33 @@ public class AnimPullingUp extends AnimBaseAction {
 	@Override
 	public boolean customBodyHeadRotation(EntityLivingBase entity) {
 		return true;
+	}
+	
+	@Override
+	public void updateAnimationTime(ResourceLocation currentAnimation, EntityLivingBase player) {
+		ICustomMovementEntity customPlayer = (ICustomMovementEntity) player;
+		
+		if (currentAnimation.equals(this.getID())) {
+			customPlayer.lmm_$setTimeRendered(MathHelper.floor_double((2 -
+					((yBlockAboveWall + 0.1) - player.boundingBox.minY)) * this.totalDuration / 2));
+			
+			int timeRendered = customPlayer.lmm_$getTimeRendered();
+			
+			if (player.isEating() ||
+					player.onGround ||
+					timeRendered < 0 ||
+					((EntityPlayer) player).doesStatusPreventSprinting() ||
+					!player.isSneaking() ||
+					timeRendered < 35 &&
+							(getWallSide(player, 0, player.height) == null || getWallTopYIfEmptySpace(player) == -1)) {
+				this.startCooldown(customPlayer);
+			}
+		}
+		
+		int cooldown = customPlayer.lmm_$getCooldown(id);
+		
+		if (cooldown > 0) {
+			customPlayer.lmm_$setCooldown(cooldown - 1, id);
+		}
 	}
 }

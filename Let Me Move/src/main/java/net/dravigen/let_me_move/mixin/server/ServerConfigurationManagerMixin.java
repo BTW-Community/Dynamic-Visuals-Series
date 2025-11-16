@@ -1,9 +1,9 @@
 package net.dravigen.let_me_move.mixin.server;
 
-import net.dravigen.let_me_move.LetMeMoveAddon;
-import net.dravigen.let_me_move.animation.player.poses.AnimStanding;
 import net.dravigen.dranimation_lib.interfaces.ICustomMovementEntity;
 import net.dravigen.dranimation_lib.packet.PacketUtils;
+import net.dravigen.let_me_move.LetMeMoveAddon;
+import net.dravigen.let_me_move.animation.player.poses.AnimStanding;
 import net.minecraft.src.EntityPlayerMP;
 import net.minecraft.src.ResourceLocation;
 import net.minecraft.src.ServerConfigurationManager;
@@ -16,6 +16,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ServerConfigurationManager.class)
 public abstract class ServerConfigurationManagerMixin {
 	
+	@Unique
+	private static ResourceLocation getDataID(EntityPlayerMP player) {
+		String[] s = player.getData(LetMeMoveAddon.CURRENT_ANIMATION).split(":");
+		
+		if (s.length < 2) {
+			return AnimStanding.id;
+		}
+		
+		return new ResourceLocation(s[0].toUpperCase(), s[1]);
+	}
+	
 	@Inject(method = "playerLoggedIn", at = @At("HEAD"))
 	private void loadPlayerAnimation(EntityPlayerMP player, CallbackInfo ci) {
 		ResourceLocation id = getDataID(player);
@@ -27,16 +38,5 @@ public abstract class ServerConfigurationManagerMixin {
 	private void savePlayerAnimation(EntityPlayerMP player, CallbackInfo ci) {
 		player.setData(LetMeMoveAddon.CURRENT_ANIMATION,
 					   String.valueOf(((ICustomMovementEntity) player).lmm_$getAnimationID()));
-	}
-	
-	@Unique
-	private static ResourceLocation getDataID(EntityPlayerMP player) {
-		String[] s = player.getData(LetMeMoveAddon.CURRENT_ANIMATION).split(":");
-		
-		if (s.length < 2) {
-			return AnimStanding.id;
-		}
-		
-		return new ResourceLocation(s[0].toUpperCase(), s[1]);
 	}
 }

@@ -1,9 +1,13 @@
 package net.dravigen.dranimation_lib.utils;
 
 import net.dravigen.dranimation_lib.animation.BaseAnimation;
-import net.minecraft.src.*;
+import net.minecraft.src.ModelBiped;
+import net.minecraft.src.ResourceLocation;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("unused")
@@ -130,8 +134,8 @@ public class AnimationUtils {
 		model.bipedHeadwear.rotationPointZ = model.bipedHead.rotationPointZ;
 	}
 	
-	public static void offsetAllRotationPoints(float x, float y, float z, float[] head, float[] rArm, float[] lArm, float[] rLeg,
-			float[] lLeg, float[] body) {
+	public static void offsetAllRotationPoints(float x, float y, float z, float[] head, float[] rArm, float[] lArm,
+			float[] rLeg, float[] lLeg, float[] body) {
 		head[3] += x;
 		head[4] += y;
 		head[5] += z;

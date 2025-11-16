@@ -47,6 +47,12 @@ public class AnimCommon extends BaseAnimation {
 		super(id, 1.8f, 1, false, 0, 0, true, 0);
 	}
 	
+	protected static float clampedI(float i) {
+		i %= 360;
+		i = i < -180 ? i + 360 : i > 180 ? i - 360 : i;
+		return i;
+	}
+	
 	protected void eatFood(float h, EntityLivingBase player, float[] head, float[] rArm) {
 		if (player.isEating() && (player.getHeldItem().getItem() instanceof ItemFood)) {
 			head[0] = sin(h * 2) * pi(1, 32) + pi(1, 12);
@@ -90,14 +96,13 @@ public class AnimCommon extends BaseAnimation {
 			float ground = model.onGround;
 			float v1 = MathHelper.sin(ground * pi) * -(head[0] - 0.7F) * 0.75F;
 			
-			rArm[0] = MathHelper.clamp_float ((float) (rArm[0] - (v * 1.2 + v1)) * v2, -pi(3, 4), pi(3, 4));
+			rArm[0] = MathHelper.clamp_float((float) (rArm[0] - (v * 1.2 + v1)) * v2, -pi(3, 4), pi(3, 4));
 			rArm[1] = MathHelper.clamp_float(rArm[1] + body[1] * 1.2F, -pi(1, 4), pi(1, 4));
 			rArm[2] = MathHelper.clamp_float(rArm[2] + MathHelper.sin(ground * pi) * -0.4F, -pi(1, 4), pi(1, 4));
 		}
 	}
 	
-	protected void breath(float h, float[] head, float[] rArm, float[] lArm, float[] rLeg,
-			float[] lLeg, float[] body) {
+	protected void breath(float h, float[] head, float[] rArm, float[] lArm, float[] rLeg, float[] lLeg, float[] body) {
 		head[0] += sin(h / 8) * pi(1, 80);
 		head[2] += sin(h / 6) * pi(1, 64);
 		
@@ -127,8 +132,8 @@ public class AnimCommon extends BaseAnimation {
 		lArm[4] += v3;
 	}
 	
-	protected void moveAround(float h, float[] head, float[] rArm, float[] lArm, float[] rLeg,
-			float[] lLeg, float[] body) {
+	protected void moveAround(float h, float[] head, float[] rArm, float[] lArm, float[] rLeg, float[] lLeg,
+			float[] body) {
 		breath(h, head, rArm, lArm, rLeg, lLeg, body);
 		
 		float v0 = cos(h / 12) * 0.05f;
@@ -170,12 +175,7 @@ public class AnimCommon extends BaseAnimation {
 		i = clampedI(i);
 		
 		float[] head = new float[]{
-				j * (pi / 180.0f) / 1.25f,
-				i * (pi / 180.0f) / 1.25f,
-				i * (pi / 180.0f) / 6,
-				0,
-				0,
-				0
+				j * (pi / 180.0f) / 1.25f, i * (pi / 180.0f) / 1.25f, i * (pi / 180.0f) / 6, 0, 0, 0
 		};
 		float[] body = new float[]{0, 0, 0, 0, 12, 0};
 		float[] rArm = new float[]{0, 0, 0, -5, 2, 0};
@@ -257,7 +257,7 @@ public class AnimCommon extends BaseAnimation {
 				lLeg[1] -= 0.31415927f;
 			}
 		}
-		else if (!player.isPlayerSleeping()){
+		else if (!player.isPlayerSleeping()) {
 			if (isFlying) {
 				backward = forw < 0;
 				
@@ -580,12 +580,6 @@ public class AnimCommon extends BaseAnimation {
 		AnimationUtils.smoothRotateAll(partHolder.getlArm(), lArm, 0.3f * delta, 0.7f * delta);
 		AnimationUtils.smoothRotateAll(partHolder.getrLeg(), rLeg, 0.3f * delta, 0.7f * delta);
 		AnimationUtils.smoothRotateAll(partHolder.getlLeg(), lLeg, 0.3f * delta, 0.7f * delta);
-	}
-	
-	protected static float clampedI(float i) {
-		i %= 360;
-		i = i < -180 ? i + 360 : i > 180 ? i - 360 : i;
-		return i;
 	}
 	
 	@Override

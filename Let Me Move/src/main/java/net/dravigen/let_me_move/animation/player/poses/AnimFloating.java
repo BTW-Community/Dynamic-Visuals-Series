@@ -6,6 +6,7 @@ import net.minecraft.src.ResourceLocation;
 
 public class AnimFloating extends AnimCommon {
 	public static final ResourceLocation id = new ResourceLocation("LMM", "floating");
+	
 	public AnimFloating() {
 		super(id);
 	}

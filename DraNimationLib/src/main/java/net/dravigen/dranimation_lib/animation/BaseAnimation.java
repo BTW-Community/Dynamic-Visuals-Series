@@ -117,7 +117,7 @@ public abstract class BaseAnimation {
 	
 	public void updateAnimationTime(ResourceLocation currentAnimation, EntityLivingBase player) {
 		ICustomMovementEntity customPlayer = (ICustomMovementEntity) player;
-
+		
 		if (currentAnimation.equals(this.id)) {
 			if (this.hasCooldown()) {
 				if (customPlayer.lmm_$getTimeRendered() < this.totalDuration) {
@@ -140,7 +140,7 @@ public abstract class BaseAnimation {
 	}
 	
 	public boolean shouldActivateAnimation(EntityPlayer player, AxisAlignedBB axisAlignedBB) {
-		if (!this.hasCooldown() || ((ICustomMovementEntity)player).lmm_$getCooldown(this.id) == 0) {
+		if (!this.hasCooldown() || ((ICustomMovementEntity) player).lmm_$getCooldown(this.id) == 0) {
 			return this.isActivationConditonsMet(player, axisAlignedBB);
 		}
 		else return false;
@@ -151,7 +151,7 @@ public abstract class BaseAnimation {
 	public abstract boolean isActivationConditonsMet(EntityPlayer player, AxisAlignedBB axisAlignedBB);
 	
 	protected float getHungerDifficultyMultiplier(EntityPlayer player) {
-		return player.worldObj.getDifficultyParameter(DifficultyParam.HungerIntensiveActionCostMultiplier.class).floatValue();
+		return player.worldObj.getDifficultyParameter(DifficultyParam.HungerIntensiveActionCostMultiplier.class);
 	}
 	
 	public abstract void renderAnimation(ModelBiped model, EntityLivingBase entity, float f, float g, float h, float i,

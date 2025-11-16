@@ -1,7 +1,10 @@
 package net.dravigen.dranimation_lib.mixin;
 
 import net.dravigen.dranimation_lib.packet.PacketUtils;
-import net.minecraft.src.*;
+import net.minecraft.src.Minecraft;
+import net.minecraft.src.NetClientHandler;
+import net.minecraft.src.NetHandler;
+import net.minecraft.src.Packet250CustomPayload;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;

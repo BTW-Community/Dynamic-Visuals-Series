@@ -11,7 +11,9 @@ import net.dravigen.let_me_move_ex.animation.player.actions.AnimDiving;
 import net.dravigen.let_me_move_ex.animation.player.actions.AnimSwimming;
 import net.minecraft.src.*;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.*;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(EntityPlayerSP.class)
@@ -60,7 +62,12 @@ public abstract class EntityPlayerSPMixin extends AbstractClientPlayer {
 			
 			newID = newID.equals(new ResourceLocation("")) ? AnimStanding.id : newID;
 			
-			AxisAlignedBB bounds = new AxisAlignedBB(this.boundingBox.minX, this.boundingBox.minY, this.boundingBox.minZ, this.boundingBox.maxX, this.boundingBox.minY + customPlayer.lmm_$getAnimation().height, this.boundingBox.maxZ);
+			AxisAlignedBB bounds = new AxisAlignedBB(this.boundingBox.minX,
+													 this.boundingBox.minY,
+													 this.boundingBox.minZ,
+													 this.boundingBox.maxX,
+													 this.boundingBox.minY + customPlayer.lmm_$getAnimation().height,
+													 this.boundingBox.maxZ);
 			
 			boolean noCollisionWithBlock = this.worldObj.getCollidingBoundingBoxes(this, bounds).isEmpty();
 			
@@ -99,7 +106,7 @@ public abstract class EntityPlayerSPMixin extends AbstractClientPlayer {
 		customPlayer.lmm_$setOnGround(this.onGround);
 		customPlayer.lmm_$setIsFlying(this.capabilities.isFlying);
 		
-		PacketUtils.sendAnimationDataToServer((EntityPlayerSP)(Object) this);
+		PacketUtils.sendAnimationDataToServer((EntityPlayerSP) (Object) this);
 	}
 	
 	@Redirect(method = "onLivingUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/src/EntityPlayerSP;isSneaking()Z"))

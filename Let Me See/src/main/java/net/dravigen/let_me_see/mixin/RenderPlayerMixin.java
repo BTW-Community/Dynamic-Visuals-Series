@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(RenderPlayer.class)
-public abstract class RenderPlayerMixin extends RendererLivingEntity{
+public abstract class RenderPlayerMixin extends RendererLivingEntity {
 	
 	@Shadow
 	private ModelBiped modelBipedMain;
@@ -53,7 +53,8 @@ public abstract class RenderPlayerMixin extends RendererLivingEntity{
 	}
 	
 	@Inject(method = "rotatePlayer", at = @At("HEAD"))
-	private void offsetPlayerIn1stPerson(AbstractClientPlayer entity, float par2, float par3, float par4, CallbackInfo ci) {
+	private void offsetPlayerIn1stPerson(AbstractClientPlayer entity, float par2, float par3, float par4,
+			CallbackInfo ci) {
 		Minecraft mc = Minecraft.getMinecraft();
 		if (LetMeSeeAddon.enable3DFirstPerson &&
 				entity == mc.thePlayer &&

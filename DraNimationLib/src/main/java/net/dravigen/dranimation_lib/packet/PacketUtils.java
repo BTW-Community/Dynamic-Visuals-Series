@@ -282,7 +282,7 @@ public class PacketUtils {
 		
 		player.playerNetServerHandler.sendPacketToPlayer(packet);
 	}
-
+	
 	@Environment(EnvType.CLIENT)
 	public static void handleExtraIsPresent(Packet250CustomPayload packet) {
 		try {
@@ -296,9 +296,10 @@ public class PacketUtils {
 	}
 	
 	
-	
 	@Environment(EnvType.CLIENT)
 	private static Entity getEntityByID(int par1) {
-		return par1 == Minecraft.getMinecraft().thePlayer.entityId ? Minecraft.getMinecraft().thePlayer : Minecraft.getMinecraft().theWorld.getEntityByID(par1);
+		return par1 == Minecraft.getMinecraft().thePlayer.entityId
+			   ? Minecraft.getMinecraft().thePlayer
+			   : Minecraft.getMinecraft().theWorld.getEntityByID(par1);
 	}
 }

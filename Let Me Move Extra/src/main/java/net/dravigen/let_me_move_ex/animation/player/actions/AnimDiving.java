@@ -3,11 +3,10 @@ package net.dravigen.let_me_move_ex.animation.player.actions;
 import net.dravigen.dranimation_lib.interfaces.ICustomMovementEntity;
 import net.dravigen.dranimation_lib.utils.AnimationUtils;
 import net.dravigen.dranimation_lib.utils.ModelPartHolder;
-import net.dravigen.let_me_move.animation.player.poses.AnimCommon;
 import net.minecraft.src.*;
 
-import static net.dravigen.let_me_move_ex.LetMeMoveExAddon.crawl_key;
 import static net.dravigen.dranimation_lib.utils.GeneralUtils.*;
+import static net.dravigen.let_me_move_ex.LetMeMoveExAddon.crawl_key;
 
 public class AnimDiving extends AnimBaseAction {
 	public static ResourceLocation id = new ResourceLocation("LMM", "diving");
@@ -38,7 +37,7 @@ public class AnimDiving extends AnimBaseAction {
 		//partHolder.resetAnimationRotationPoints();
 		
 		i = clampedI(i);
-
+		
 		float[] head = new float[]{
 				leaningPitch > 0.0F ? lerpAngle(leaningPitch, partHolder.getHead()[0], -pi / 4) : j * (pi / 180.0f),
 				i * (pi / 180.0f),
@@ -57,7 +56,9 @@ public class AnimDiving extends AnimBaseAction {
 				0
 		};
 		float[] lArm = new float[]{
-				lerpAngle(leaningPitch, partHolder.getrArm()[0], -pi + 1.8707964F * method_2807(0) / method_2807(14.0F)),
+				lerpAngle(leaningPitch,
+						  partHolder.getrArm()[0],
+						  -pi + 1.8707964F * method_2807(0) / method_2807(14.0F)),
 				lerpAngle(leaningPitch, partHolder.getrArm()[1], 0),
 				lerpAngle(leaningPitch, partHolder.getrArm()[2], 0),
 				5,

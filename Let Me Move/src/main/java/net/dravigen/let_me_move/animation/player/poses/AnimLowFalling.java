@@ -40,10 +40,7 @@ public class AnimLowFalling extends AnimCommon {
 		float sin1 = MathHelper.sin(v + 2);
 		
 		float[] head = new float[]{
-				j * (pi / 180.0f), i * (pi / 180.0f), 0,
-				0,
-				0,
-				0
+				j * (pi / 180.0f), i * (pi / 180.0f), 0, 0, 0, 0
 		};
 		float[] body = new float[]{0, 0, 0, 0, 12, 0};
 		float[] rArm = new float[]{cos * 0.65f, 0, 1.75f + sin * 0.65f, -5, 2, 0};

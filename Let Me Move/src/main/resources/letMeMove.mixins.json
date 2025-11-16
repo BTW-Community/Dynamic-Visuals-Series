@@ -6,7 +6,6 @@
   "mixins": [
     "EntityLivingBaseMixin",
     "client.render.EntityRendererMixin",
-    "client.render.ItemRendererMixin",
     "client.render.RenderPlayerMixin",
     "server.EntityPlayerMPMixin",
     "server.NetServerHandlerMixin",

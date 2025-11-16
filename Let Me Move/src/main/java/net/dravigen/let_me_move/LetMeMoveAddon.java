@@ -7,7 +7,7 @@ import btw.world.util.data.DataProvider;
 import net.dravigen.dranimation_lib.utils.AnimationUtils;
 import net.dravigen.let_me_move.animation.AnimRegistry;
 import net.dravigen.let_me_move.animation.player.poses.AnimStanding;
-import net.minecraft.src.*;
+import net.minecraft.src.NBTTagCompound;
 
 public class LetMeMoveAddon extends BTWAddon {
 	
@@ -26,6 +26,10 @@ public class LetMeMoveAddon extends BTWAddon {
 		super();
 	}
 	
+	public static boolean isExtraLoaded() {
+		return AddonHandler.isModInstalled("let_me_move_ex") && AnimationUtils.extraIsPresent;
+	}
+	
 	@Override
 	public void preInitialize() {
 		CURRENT_ANIMATION.register();
@@ -35,9 +39,5 @@ public class LetMeMoveAddon extends BTWAddon {
 	public void initialize() {
 		AnimRegistry.registerAllAnimation();
 		AddonHandler.logMessage(this.getName() + " Version " + this.getVersionString() + " Initializing...");
-	}
-	
-	public static boolean isExtraLoaded() {
-		return AddonHandler.isModInstalled("let_me_move_ex") && AnimationUtils.extraIsPresent;
 	}
 }

@@ -4,10 +4,9 @@ import net.dravigen.dranimation_lib.interfaces.ICustomMovementEntity;
 import net.dravigen.dranimation_lib.utils.AnimationUtils;
 import net.dravigen.dranimation_lib.utils.GeneralUtils;
 import net.dravigen.dranimation_lib.utils.ModelPartHolder;
-import net.dravigen.let_me_move.animation.player.poses.AnimCommon;
 import net.minecraft.src.*;
 
-import static net.dravigen.dranimation_lib.utils.GeneralUtils.*;
+import static net.dravigen.dranimation_lib.utils.GeneralUtils.pi;
 
 public class AnimDashing extends AnimBaseAction {
 	public static final ResourceLocation id = new ResourceLocation("LMM", "dashing");
@@ -83,7 +82,7 @@ public class AnimDashing extends AnimBaseAction {
 	
 	@Override
 	public boolean getCustomMove(EntityPlayer player) {
-		if (((ICustomMovementEntity)player).lmm_$getTimeRendered() == 0) {
+		if (((ICustomMovementEntity) player).lmm_$getTimeRendered() == 0) {
 			float var1 = player.moveStrafing * 8;
 			float var4 = var1 * var1;
 			

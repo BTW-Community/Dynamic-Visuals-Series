@@ -12,7 +12,8 @@ import net.minecraft.src.*;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
-import org.spongepowered.asm.mixin.injection.*;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -67,9 +68,7 @@ public abstract class EntityLivingBaseMixin extends Entity implements ICustomMov
 	
 	@Override
 	public float lmm_$getLeaningPitch(float tickDelta) {
-		return GeneralUtils.lerpF(tickDelta,
-								  this.lastLeaningPitch,
-								  this.leaningPitch);
+		return GeneralUtils.lerpF(tickDelta, this.lastLeaningPitch, this.leaningPitch);
 	}
 	
 	@Override
@@ -177,18 +176,13 @@ public abstract class EntityLivingBaseMixin extends Entity implements ICustomMov
 	}
 	
 	@Override
-	public int lmm_$getTimeRendered() {
-		return this.timeRendered;
-	}
-	
-	@Override
 	public void lmm_$setTimeRendered(int time) {
 		this.timeRendered = time;
 	}
 	
 	@Override
-	public int lmm_$getCooldown(ResourceLocation id) {
-		return this.animationCooldowns.getOrDefault(id, 0);
+	public int lmm_$getTimeRendered() {
+		return this.timeRendered;
 	}
 	
 	@Override
@@ -197,8 +191,8 @@ public abstract class EntityLivingBaseMixin extends Entity implements ICustomMov
 	}
 	
 	@Override
-	public boolean lmm_$getOnGround() {
-		return this.isOnGround;
+	public int lmm_$getCooldown(ResourceLocation id) {
+		return this.animationCooldowns.getOrDefault(id, 0);
 	}
 	
 	@Override
@@ -207,18 +201,8 @@ public abstract class EntityLivingBaseMixin extends Entity implements ICustomMov
 	}
 	
 	@Override
-	public boolean lmm_$getIsFlying() {
-		return this.isFlying;
-	}
-	
-	@Override
-	public void lmm_$setIsFlying(boolean isFlying) {
-		this.isFlying = isFlying;
-	}
-	
-	@Override
-	public Map<ResourceLocation, Integer> lmm_$getAllCooldown() {
-		return animationCooldowns;
+	public boolean lmm_$getOnGround() {
+		return this.isOnGround;
 	}
 	
 	@Override
@@ -227,8 +211,18 @@ public abstract class EntityLivingBaseMixin extends Entity implements ICustomMov
 	}
 	
 	@Override
-	public float[] lmm_$getRenderRotOff() {
-		return this.renderRotOff;
+	public Map<ResourceLocation, Integer> lmm_$getAllCooldown() {
+		return animationCooldowns;
+	}
+	
+	@Override
+	public void lmm_$setIsFlying(boolean isFlying) {
+		this.isFlying = isFlying;
+	}
+	
+	@Override
+	public boolean lmm_$getIsFlying() {
+		return this.isFlying;
 	}
 	
 	@Override
@@ -237,8 +231,8 @@ public abstract class EntityLivingBaseMixin extends Entity implements ICustomMov
 	}
 	
 	@Override
-	public float[] lmm_$getCapeRot() {
-		return this.capeRot;
+	public float[] lmm_$getRenderRotOff() {
+		return this.renderRotOff;
 	}
 	
 	@Override
@@ -247,8 +241,8 @@ public abstract class EntityLivingBaseMixin extends Entity implements ICustomMov
 	}
 	
 	@Override
-	public float lmm_$getDelta() {
-		return this.renderDelta;
+	public float[] lmm_$getCapeRot() {
+		return this.capeRot;
 	}
 	
 	@Override
@@ -257,8 +251,8 @@ public abstract class EntityLivingBaseMixin extends Entity implements ICustomMov
 	}
 	
 	@Override
-	public float[] lmm_$getLimbSwing() {
-		return limbSwing;
+	public float lmm_$getDelta() {
+		return this.renderDelta;
 	}
 	
 	@Override
@@ -267,8 +261,8 @@ public abstract class EntityLivingBaseMixin extends Entity implements ICustomMov
 	}
 	
 	@Override
-	public float[] lmm_$getPrevLimbSwing() {
-		return this.prevLimbSwing;
+	public float[] lmm_$getLimbSwing() {
+		return limbSwing;
 	}
 	
 	@Override
@@ -276,12 +270,16 @@ public abstract class EntityLivingBaseMixin extends Entity implements ICustomMov
 		this.prevLimbSwing = floats;
 	}
 	
+	@Override
+	public float[] lmm_$getPrevLimbSwing() {
+		return this.prevLimbSwing;
+	}
+	
 	@Redirect(method = "onUpdate", at = @At(value = "INVOKE", target = "Lnet/minecraft/src/EntityLivingBase;func_110146_f(FF)F"))
 	private float disableHeadTurn(EntityLivingBase instance, float par1, float par2) {
 		ICustomMovementEntity customEntity = (ICustomMovementEntity) instance;
 		
-		if (instance instanceof EntityPlayer &&
-				customEntity.lmm_$getAnimation().customBodyHeadRotation(instance)) {
+		if (instance instanceof EntityPlayer && customEntity.lmm_$getAnimation().customBodyHeadRotation(instance)) {
 			return par2;
 		}
 		

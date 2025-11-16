@@ -7,6 +7,9 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class GeneralUtils {
 	public static final float pi = (float) Math.PI;
+	// Thresholds used to classify movement based on the dot product value
+	private static final float FORWARD_THRESHOLD = 0.1f;
+	private static final float BACKWARD_THRESHOLD = -0.1f;
 	
 	public static float pi(int i, int j) {
 		return pi * i / j;
@@ -27,7 +30,6 @@ public class GeneralUtils {
 	public static double lerpD(double delta, double start, double end) {
 		return start + delta * (end - start);
 	}
-	
 	
 	public static boolean isInsideWater(Entity entity) {
 		World world = entity.worldObj;
@@ -252,7 +254,7 @@ public class GeneralUtils {
 		
 		return (AxisAlignedBB) boundingBoxes.get(boundingBoxes.size() - 1);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	private static List<AxisAlignedBB> getBlockBoundCenteredList(Entity entity, double x, double y, double z,
 			double height) {
@@ -265,82 +267,48 @@ public class GeneralUtils {
 																								 z + 0.25));
 	}
 	
-	// Thresholds used to classify movement based on the dot product value
-	private static final float FORWARD_THRESHOLD = 0.1f;
-	private static final float BACKWARD_THRESHOLD = -0.1f;
-	
-	public enum MovementType {
-		IDLE, FORWARD, BACKWARD, STRAFING, MIXED
-	}
-	
 	/**
-	 * Determines the primary direction of horizontal movement relative to the player's view.
-	 * * @param player The entity whose movement is being analyzed.
-	 * @return The classified MovementType.
+	 * AI Stuff
 	 */
 	public static MovementType getRelativeMovement(EntityLivingBase player) {
-		
-		// --- 1. Calculate Movement Vector (M) in XZ Plane ---
-		
-		// Horizontal change in position (Current Pos - Previous Pos)
 		double dx = player.posX - player.prevPosX;
 		double dz = player.posZ - player.prevPosZ;
 		
 		double magnitudeSq = (dx * dx) + (dz * dz);
 		
-		// If movement is negligible, the player is IDLE
 		if (magnitudeSq < 0.0001) {
 			return MovementType.IDLE;
 		}
 		
-		// Calculate the length (magnitude) of the movement vector
 		double magnitude = Math.sqrt(magnitudeSq);
 		
-		// Normalized Movement Vector (M_norm)
-		float mx = (float)(dx / magnitude);
-		float mz = (float)(dz / magnitude);
+		float mx = (float) (dx / magnitude);
+		float mz = (float) (dz / magnitude);
 		
-		// --- 2. Calculate View Vector (V) ---
-		
-		// Yaw angle (rotation around Y-axis) in radians
 		float yawRad = player.rotationYaw * (float) (Math.PI / 180.0F);
 		
-		// The standard Minecraft XZ unit vector for player look direction
-		// NOTE: Signs may vary based on your specific coordinate system!
 		float vx = -MathHelper.sin(yawRad);
-		float vz = MathHelper.cos(yawRad);
+		float vx_right = MathHelper.cos(yawRad);
 		
-		// --- 3. Calculate Dot Product (Alignment) ---
+		float dotProduct = (mx * vx) + (mz * vx_right);
 		
-		// Dot Product = (Mx * Vx) + (Mz * Vz)
-		float dotProduct = (mx * vx) + (mz * vz);
-		
-		// --- 4. Classify Movement ---
 		
 		if (dotProduct > FORWARD_THRESHOLD) {
-			// Dot product close to 1: Movement is aligned with view direction (0 degrees)
 			return MovementType.FORWARD;
 		}
 		
 		if (dotProduct < BACKWARD_THRESHOLD) {
-			// Dot product close to -1: Movement is opposite to view direction (180 degrees)
 			return MovementType.BACKWARD;
 		}
 		
-		// To check for strafing, we need the "side-to-side" dot product.
-		// The vector perpendicular to V is (-Vz, Vx) or (Vz, -Vx).
-		// Let's check alignment with the rightward strafe vector (V_right)
-		float vx_right = vz;
 		float vz_right = -vx;
 		
 		float strafeDotProduct = (mx * vx_right) + (mz * vz_right);
 		
 		if (strafeDotProduct > FORWARD_THRESHOLD || strafeDotProduct < BACKWARD_THRESHOLD) {
-			// If the movement vector aligns with the right or left strafe vector (dot product near 1 or -1)
 			return MovementType.STRAFING;
 		}
 		
-		// If it's movement, but not a clear Forward, Backward, or Strafe, it's mixed (diagonal)
 		if (magnitudeSq > 0.005) {
 			return MovementType.MIXED;
 		}
@@ -349,58 +317,43 @@ public class GeneralUtils {
 	}
 	
 	/**
-	 * Calculates the forward/backward and strafe components of a player's movement
-	 * relative to their current view direction.
-	 *
-	 * @param player The entity whose movement is being analyzed.
-	 * @return A float array: [0] = Forward/Backward Value, [1] = Strafe (Left/Right) Value.
+	 * AI Stuff
 	 */
 	public static float[] getMovementComponents(EntityLivingBase player) {
-		
-		// --- 1. Calculate Movement Vector (M) ---
-		
 		double dx = player.posX - player.prevPosX;
 		double dz = player.posZ - player.prevPosZ;
 		
 		double magnitudeSq = (dx * dx) + (dz * dz);
 		
-		// If movement is negligible, return [0.0, 0.0] for idle state
 		if (magnitudeSq < 0.001) {
-			return new float[] {0.0f, 0.0f};
+			return new float[]{0.0f, 0.0f};
 		}
 		
-		// Calculate the magnitude and normalize the movement vector (M_norm)
 		float magnitude = (float) Math.sqrt(magnitudeSq);
-		float M_norm_x = (float)(dx / magnitude);
-		float M_norm_z = (float)(dz / magnitude);
+		float M_norm_x = (float) (dx / magnitude);
+		float M_norm_z = (float) (dz / magnitude);
 		
-		// --- 2. Calculate View Vectors (V_fwd and V_right) ---
-		
-		// Convert yaw to radians
 		float yawRad = player.rotationYaw * (float) (Math.PI / 180.0F);
 		
-		// Forward Vector (V_fwd) - Normalized Look Direction
-		// The signs here are standard for Minecraft's XZ plane projection:
 		float VfwdX = -MathHelper.sin(yawRad);
 		float VfwdZ = MathHelper.cos(yawRad);
 		
-		// Right Vector (V_right) - Perpendicular to the Forward Vector
 		float VrightX = MathHelper.cos(yawRad);
 		float VrightZ = MathHelper.sin(yawRad);
 		
-		// --- 3. Calculate Component Values using Dot Products ---
-		
-		// A. Forward/Backward Component (Dot Product with V_fwd)
-		// Range: 1.0 (Forward) to -1.0 (Backward)
 		float forwardValue = (M_norm_x * VfwdX) + (M_norm_z * VfwdZ);
 		
-		// B. Strafe Component (Dot Product with V_right)
-		// Range: 1.0 (Right Strafe) to -1.0 (Left Strafe)
 		float strafeValue = (M_norm_x * VrightX) + (M_norm_z * VrightZ);
 		
-		// The values are now scaled between -1.0 and 1.0 based on how
-		// much of the movement is aligned with each axis.
-		return new float[] {forwardValue, strafeValue};
+		return new float[]{forwardValue, strafeValue};
+	}
+	
+	public enum MovementType {
+		IDLE,
+		FORWARD,
+		BACKWARD,
+		STRAFING,
+		MIXED
 	}
 	
 	public enum coords {

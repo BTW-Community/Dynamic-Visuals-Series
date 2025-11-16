@@ -5,8 +5,8 @@ import net.dravigen.dranimation_lib.utils.AnimationUtils;
 import net.dravigen.dranimation_lib.utils.ModelPartHolder;
 import net.minecraft.src.*;
 
+import static net.dravigen.dranimation_lib.utils.GeneralUtils.pi;
 import static net.dravigen.let_me_move_ex.LetMeMoveExAddon.crawl_key;
-import static net.dravigen.dranimation_lib.utils.GeneralUtils.*;
 
 public class AnimSkyDiving extends AnimBaseAction {
 	public static final ResourceLocation id = new ResourceLocation("LMM", "skyDiving");
@@ -41,10 +41,7 @@ public class AnimSkyDiving extends AnimBaseAction {
 		i = clampedI(i);
 		
 		float[] head = new float[]{
-				-0.5f, i * (pi / 180.0f), 0,
-				0,
-				0,
-				0
+				-0.5f, i * (pi / 180.0f), 0, 0, 0, 0
 		};
 		float[] body = new float[]{0, 0, 0, 0, 12, 0};
 		float[] rArm = new float[]{0.5f, 0, fMove ? 0.5f : 2, -5, 2, 0};

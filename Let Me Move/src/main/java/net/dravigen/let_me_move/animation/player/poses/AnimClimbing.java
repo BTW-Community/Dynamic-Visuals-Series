@@ -75,9 +75,8 @@ public class AnimClimbing extends AnimCommon {
 		body[0] = -pi(1, 20);
 		
 		body[5] = sin(body[0]) * 12;
-
-		rLeg[5] = sin(body[0]) * 12 +
-				Math.max((sin((float) (entity.posY * 4 + pi)) - 1), -1.5f);
+		
+		rLeg[5] = sin(body[0]) * 12 + Math.max((sin((float) (entity.posY * 4 + pi)) - 1), -1.5f);
 		
 		lLeg[5] = sin(body[0]) * 12 + Math.max((sin((float) (entity.posY * 4)) - 1), -1.5f);
 		

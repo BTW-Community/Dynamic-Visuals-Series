@@ -22,7 +22,8 @@ import java.util.List;
 
 @Mixin(ModelBiped.class)
 public abstract class ModelBipedMixin extends ModelBase {
-	@Shadow public ModelRenderer bipedCloak;
+	@Shadow
+	public ModelRenderer bipedCloak;
 	
 	@Inject(method = "render", at = @At("HEAD"))
 	private void rotateBody(Entity entity, float f, float g, float h, float i, float j, float u, CallbackInfo ci) {
@@ -158,8 +159,12 @@ public abstract class ModelBipedMixin extends ModelBase {
 		if (entity instanceof EntityPlayer player) {
 			Minecraft mc = Minecraft.getMinecraft();
 			if (player != mc.thePlayer) {
-				f = GeneralUtils.lerpF(mc.getTimer().renderPartialTicks, customEntity.lmm_$getPrevLimbSwing()[0], customEntity.lmm_$getLimbSwing()[0]) ;
-				g = GeneralUtils.lerpF(mc.getTimer().renderPartialTicks, customEntity.lmm_$getPrevLimbSwing()[1], customEntity.lmm_$getLimbSwing()[1]) ;
+				f = GeneralUtils.lerpF(mc.getTimer().renderPartialTicks,
+									   customEntity.lmm_$getPrevLimbSwing()[0],
+									   customEntity.lmm_$getLimbSwing()[0]);
+				g = GeneralUtils.lerpF(mc.getTimer().renderPartialTicks,
+									   customEntity.lmm_$getPrevLimbSwing()[1],
+									   customEntity.lmm_$getLimbSwing()[1]);
 				customEntity.lmm_$setPrevLimbSwing(new float[]{f, g});
 			}
 			else {
@@ -168,15 +173,7 @@ public abstract class ModelBipedMixin extends ModelBase {
 			
 			
 			customEntity.lmm_$getAnimation()
-					.renderAnimation((ModelBiped) (Object) this,
-									 player,
-									 f,
-									 g,
-									 h,
-									 i,
-									 j,
-									 u,
-									 AnimationUtils.delta);
+					.renderAnimation((ModelBiped) (Object) this, player, f, g, h, i, j, u, AnimationUtils.delta);
 			
 			AnimationUtils.updateAnimationRotation(customEntity.lmm_$getParHolder(), (ModelBiped) (Object) this);
 			

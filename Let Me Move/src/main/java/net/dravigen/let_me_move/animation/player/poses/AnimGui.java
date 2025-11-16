@@ -5,7 +5,7 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.Minecraft;
 import net.minecraft.src.ResourceLocation;
 
-public class AnimGui extends AnimCommon{
+public class AnimGui extends AnimCommon {
 	public static final ResourceLocation id = new ResourceLocation("LMM", "busy");
 	
 	public AnimGui() {

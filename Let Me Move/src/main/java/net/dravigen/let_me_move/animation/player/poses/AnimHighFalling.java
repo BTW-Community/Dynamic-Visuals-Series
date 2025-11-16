@@ -5,7 +5,7 @@ import net.dravigen.dranimation_lib.utils.AnimationUtils;
 import net.dravigen.dranimation_lib.utils.ModelPartHolder;
 import net.minecraft.src.*;
 
-import static net.dravigen.dranimation_lib.utils.GeneralUtils.*;
+import static net.dravigen.dranimation_lib.utils.GeneralUtils.pi;
 
 public class AnimHighFalling extends AnimCommon {
 	public final static int minFallHeight = 24;
@@ -39,10 +39,7 @@ public class AnimHighFalling extends AnimCommon {
 		float sin1 = MathHelper.sin(leaning + 2);
 		
 		float[] head = new float[]{
-				0.25f, i * (pi / 180.0f), 0,
-				0,
-				0,
-				0
+				0.25f, i * (pi / 180.0f), 0, 0, 0, 0
 		};
 		float[] body = new float[]{0, 0, 0, 0, 12, 0};
 		float[] rArm = new float[]{cos, 0, 1.75f + sin, -5, 2, 0};

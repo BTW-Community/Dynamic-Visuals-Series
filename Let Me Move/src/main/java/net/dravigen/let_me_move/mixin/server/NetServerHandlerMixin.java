@@ -1,8 +1,11 @@
 package net.dravigen.let_me_move.mixin.server;
 
-import net.minecraft.src.*;
+import net.minecraft.src.EntityPlayerMP;
+import net.minecraft.src.NetHandler;
+import net.minecraft.src.NetServerHandler;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.*;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(NetServerHandler.class)
 public abstract class NetServerHandlerMixin extends NetHandler {

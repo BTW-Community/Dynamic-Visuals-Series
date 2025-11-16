@@ -7,13 +7,20 @@ import net.dravigen.let_me_move_ex.animation.player.actions.AnimRolling;
 import net.dravigen.let_me_move_ex.animation.player.actions.AnimSkyDiving;
 import net.dravigen.let_me_move_ex.animation.player.actions.AnimWallSliding;
 import net.minecraft.src.*;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.*;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyArg;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(EntityLivingBase.class)
 public abstract class EntityLivingBaseMixin extends Entity implements ICustomMovementEntity {
+	
+	@Shadow
+	public float moveForward;
 	
 	public EntityLivingBaseMixin(World par1World) {
 		super(par1World);
@@ -21,8 +28,6 @@ public abstract class EntityLivingBaseMixin extends Entity implements ICustomMov
 	
 	@Shadow
 	public abstract boolean attackEntityFrom(DamageSource par1DamageSource, float par2);
-	
-	@Shadow public float moveForward;
 	
 	@Inject(method = "getSpeedModifier", at = @At("RETURN"), cancellable = true)
 	private void applyAnimationSpeedModifier(CallbackInfoReturnable<Float> cir) {
@@ -78,7 +83,7 @@ public abstract class EntityLivingBaseMixin extends Entity implements ICustomMov
 		return par1;
 	}
 	
-	@Redirect(method = "onLivingUpdate", at = @At(value = "FIELD", target = "Lnet/minecraft/src/EntityLivingBase;onGround:Z"))
+	@Redirect(method = "onLivingUpdate", at = @At(value = "FIELD", target = "Lnet/minecraft/src/EntityLivingBase;onGround:Z", opcode = Opcodes.GETFIELD))
 	private boolean allowJumpWhileWallSliding(EntityLivingBase instance) {
 		if (((ICustomMovementEntity) instance).lmm_$isAnimation(AnimWallSliding.id)) {
 			return true;

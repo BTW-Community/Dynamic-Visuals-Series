@@ -2,7 +2,8 @@ package net.dravigen.let_me_move_ex.mixin.client.render;
 
 import net.dravigen.dranimation_lib.interfaces.ICustomMovementEntity;
 import net.dravigen.let_me_move_ex.animation.player.actions.AnimSwimming;
-import net.minecraft.src.*;
+import net.minecraft.src.EntityRenderer;
+import net.minecraft.src.Minecraft;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;

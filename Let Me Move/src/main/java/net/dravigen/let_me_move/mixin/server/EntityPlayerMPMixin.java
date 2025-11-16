@@ -1,7 +1,9 @@
 package net.dravigen.let_me_move.mixin.server;
 
 import net.dravigen.dranimation_lib.packet.PacketUtils;
-import net.minecraft.src.*;
+import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.EntityPlayerMP;
+import net.minecraft.src.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -17,7 +19,7 @@ public abstract class EntityPlayerMPMixin extends EntityPlayer {
 	
 	@Inject(method = "onUpdate", at = @At("HEAD"))
 	private void syncTrackingPlayersAnimation(CallbackInfo ci) {
-		PacketUtils.sendAnimationDataToTrackingPlayer((EntityPlayerMP) (Object)this);
+		PacketUtils.sendAnimationDataToTrackingPlayer((EntityPlayerMP) (Object) this);
 	}
 	
 	@Inject(method = "getEyeHeight", at = @At("RETURN"), cancellable = true)

@@ -5,8 +5,8 @@ import net.dravigen.dranimation_lib.utils.AnimationUtils;
 import net.dravigen.dranimation_lib.utils.ModelPartHolder;
 import net.minecraft.src.*;
 
-import static net.dravigen.let_me_move_ex.LetMeMoveExAddon.crawl_key;
 import static net.dravigen.dranimation_lib.utils.GeneralUtils.*;
+import static net.dravigen.let_me_move_ex.LetMeMoveExAddon.crawl_key;
 
 public class AnimSwimming extends AnimBaseAction {
 	public static final ResourceLocation id = new ResourceLocation("LMM", "swimming");
