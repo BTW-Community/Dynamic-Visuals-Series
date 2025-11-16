@@ -421,8 +421,8 @@ public class AnimCommon extends BaseAnimation {
 					g = player.inWater ? 0.5f : g;
 					
 					if (isMoving) {
-						rArm[0] = cos(f * mul) * 2.0F * g * (bSprint ? 0.8f : 0.65F) / k;
-						lArm[0] = cos(f * mul + pi) * 2.0F * g * (bSprint ? 0.8f : 0.65F) / k;
+						rArm[0] = cos(f * mul) * 2.0F * g * (bSprint ? 0.8f : 0.5F) / k;
+						lArm[0] = cos(f * mul + pi) * 2.0F * g * (bSprint ? 0.8f : 0.5F) / k;
 						
 						body[0] = (cos(f * mul * 2) + 1) * g * (bSprint ? 0.1f : 0) / k + (bSprint ? pi(1, 32) : 0);
 						body[1] = cos(f * mul) *

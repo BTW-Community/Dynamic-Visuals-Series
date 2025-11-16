@@ -15,7 +15,7 @@ public abstract class RenderGlobalMixin {
 	private Minecraft mc;
 	
 	@Redirect(method = "renderEntities", at = @At(value = "FIELD", target = "Lnet/minecraft/src/GameSettings;thirdPersonView:I", opcode = Opcodes.GETFIELD, ordinal = 0))
-	private int test(GameSettings instance) {
+	private int renderPlayerIn1stPerson(GameSettings instance) {
 		if (LetMeSeeAddon.enable3DFirstPerson && !(mc.currentScreen instanceof GuiContainerCreative || mc.currentScreen instanceof GuiInventory)) {
 			return 1;
 		}
