@@ -265,7 +265,7 @@ public class AnimCommon extends BaseAnimation {
 			if (isFlying) {
 				backward = forw < 0;
 				
-				mul = motionY < 0 ? (float) -(motionY * 48) : motionY > 0 ? 0 : 1;
+				mul = motionY < 0 ? (float) -(motionY * 32) : motionY > 0 ? 0 : 1;
 				
 				rArm[2] = pi(1, 48) * mul;
 				lArm[2] = -pi(1, 48) * mul;
