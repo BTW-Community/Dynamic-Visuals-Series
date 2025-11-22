@@ -1,5 +1,6 @@
 package net.dravigen.let_me_see.mixin;
 
+import net.dravigen.dranimation_lib.interfaces.ICustomMovementEntity;
 import net.dravigen.let_me_see.config.LMS_Settings;
 import net.minecraft.src.*;
 import org.spongepowered.asm.mixin.Mixin;
@@ -34,7 +35,7 @@ public abstract class ModelBipedMixin {
 				entity == mc.thePlayer &&
 				mc.gameSettings.thirdPersonView == 0 &&
 				!(mc.currentScreen instanceof GuiContainerCreative || mc.currentScreen instanceof GuiInventory)) {
-			this.bipedBody.showModel = mc.thePlayer.isPlayerSleeping() || entity.height > 1.4;
+			this.bipedBody.showModel = mc.thePlayer.isPlayerSleeping() || entity.height > 1.4 && !((ICustomMovementEntity)entity).lmm_$isAnimation(new ResourceLocation("LMM", "wallSliding"));
 			this.bipedHead.showModel = false;
 			this.bipedHeadwear.showModel = false;
 			
