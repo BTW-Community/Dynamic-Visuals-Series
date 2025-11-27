@@ -364,8 +364,8 @@ public class AnimCommon extends BaseAnimation {
 						rArm[0] = (float) (jumpSwing * pi(1, 3) * (1 - motionY) * v1);
 						lArm[0] = (float) (-jumpSwing * pi(1, 3) * (1 - motionY) * v1);
 						
-						rLeg[0] = pi(1, 16) * (jumpSwing < 0 ? backward ? 0 : 3 : backward ? -2 : 2) * v;
-						lLeg[0] = pi(1, 16) * (-jumpSwing < 0 ? backward ? 0 : 3 : backward ? -2 : 2) * v;
+						rLeg[0] = Math.abs(forw) * pi(1, 16) * (jumpSwing < 0 ? backward ? 0 : 3 : backward ? -2 : 2) * v;
+						lLeg[0] = Math.abs(forw) * pi(1, 16) * (-jumpSwing < 0 ? backward ? 0 : 3 : backward ? -2 : 2) * v;
 						
 						rLeg[4] = (float) (12 - Math.max(0, jumpSwing * 2) * 2 * motYposRev * v1);
 						rLeg[5] = (float) (-Math.max(0, jumpSwing * 2) * g * 2 * motYposRev * v);

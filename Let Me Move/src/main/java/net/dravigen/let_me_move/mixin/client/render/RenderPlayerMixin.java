@@ -42,32 +42,32 @@ public abstract class RenderPlayerMixin {
 																											180 / pi,
 																							0,
 																							90),
-																	 0.4f * AnimationUtils.delta));
+																	 0.2f * AnimationUtils.delta));
 		GL11.glRotatef(customEntity.lmm_$getCapeRot()[0], x, y, z);
 	}
 	
 	@Redirect(method = "renderSpecials", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL11;glRotatef(FFFF)V", ordinal = 6), remap = false)
 	private void rotateCapeZ(float angle, float x, float y, float z, AbstractClientPlayer player) {
 		ICustomMovementEntity customEntity = (ICustomMovementEntity) player;
-		
+		/*
 		customEntity.lmm_$setCapeRot(1,
 									 GeneralUtils.incrementUntilGoal(customEntity.lmm_$getCapeRot()[1],
 																	 angle,
-																	 0.1f * AnimationUtils.delta));
-		
-		GL11.glRotatef(customEntity.lmm_$getCapeRot()[1], x, y, z);
+																	 0.025f * AnimationUtils.delta));
+		*/
+		GL11.glRotatef(0, x, y, z);
 	}
 	
 	@Redirect(method = "renderSpecials", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL11;glRotatef(FFFF)V", ordinal = 7), remap = false)
 	private void rotateCapeY(float angle, float x, float y, float z, AbstractClientPlayer player) {
 		ICustomMovementEntity customEntity = (ICustomMovementEntity) player;
 		
-		customEntity.lmm_$setCapeRot(2,
+		/*customEntity.lmm_$setCapeRot(2,
 									 GeneralUtils.incrementUntilGoal(customEntity.lmm_$getCapeRot()[2],
 																	 angle,
-																	 0.1f * AnimationUtils.delta));
-		
-		GL11.glRotatef(customEntity.lmm_$getCapeRot()[2], x, y, z);
+																	 0.025f * AnimationUtils.delta));
+		*/
+		GL11.glRotatef(0, x, y, z);
 	}
 	
 	

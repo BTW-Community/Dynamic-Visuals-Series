@@ -96,7 +96,7 @@ public class AnimationUtils {
 		model.bipedBody.rotationPointY = partHolder.body[4];
 		model.bipedBody.rotationPointZ = partHolder.body[5];
 		
-		model.bipedCloak.rotateAngleY = partHolder.body[1];
+		//model.bipedCloak.rotateAngleY = partHolder.body[1];
 		
 		model.bipedRightArm.rotateAngleX = partHolder.rArm[0];
 		model.bipedRightArm.rotateAngleY = partHolder.rArm[1];

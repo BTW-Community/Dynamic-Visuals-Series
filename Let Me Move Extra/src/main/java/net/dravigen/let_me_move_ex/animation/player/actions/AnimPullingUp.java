@@ -43,7 +43,7 @@ public class AnimPullingUp extends AnimBaseAction {
 	public boolean isActivationConditonsMet(EntityPlayer player, AxisAlignedBB axisAlignedBB) {
 		return player.isSneaking() &&
 				player.moveForward > 0 &&
-				(getWallTopYIfEmptySpace(player) - player.boundingBox.minY) < 2;
+				(getWallTopYIfEmptySpace(player) - player.boundingBox.minY) < 1.9;
 	}
 	
 	@Override
@@ -179,9 +179,6 @@ public class AnimPullingUp extends AnimBaseAction {
 		ICustomMovementEntity customPlayer = (ICustomMovementEntity) player;
 		
 		if (currentAnimation.equals(this.getID())) {
-			customPlayer.lmm_$setTimeRendered(MathHelper.floor_double((2 -
-					((yBlockAboveWall + 0.1) - player.boundingBox.minY)) * this.totalDuration / 2));
-			
 			int timeRendered = customPlayer.lmm_$getTimeRendered();
 			
 			if (player.isEating() ||
@@ -193,6 +190,9 @@ public class AnimPullingUp extends AnimBaseAction {
 							(getWallSide(player, 0, player.height) == null || getWallTopYIfEmptySpace(player) == -1)) {
 				this.startCooldown(customPlayer);
 			}
+			
+			customPlayer.lmm_$setTimeRendered(MathHelper.floor_double((2 -
+					((yBlockAboveWall + 0.1) - player.boundingBox.minY)) * this.totalDuration / 2));
 		}
 		
 		int cooldown = customPlayer.lmm_$getCooldown(id);
