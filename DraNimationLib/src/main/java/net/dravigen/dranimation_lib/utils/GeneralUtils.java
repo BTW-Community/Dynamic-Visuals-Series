@@ -111,7 +111,7 @@ public class GeneralUtils {
 	public static float incrementUntilGoal(float currentValue, float goalValue, float easeFactor) {
 		float difference = goalValue - currentValue;
 		
-		float stepSize = difference * (DVS_ConfigManager.SMOOTH_ANIMATION.getBool() ? easeFactor : 1);
+		float stepSize = difference * easeFactor;
 		
 		return currentValue + stepSize;
 	}
@@ -129,7 +129,7 @@ public class GeneralUtils {
 			difference += 360.0F;
 		}
 		
-		float stepSize = difference * (DVS_ConfigManager.SMOOTH_ANIMATION.getBool() ? easeFactor : 1);
+		float stepSize = difference * easeFactor;
 		
 		float newValue = currentValue + stepSize;
 		

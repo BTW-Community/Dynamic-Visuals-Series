@@ -62,7 +62,7 @@ public class AnimSwimming extends AnimBaseAction {
 																				 (entity.moveStrafing -
 																						 entity.moveStrafing / 2 *
 																								 entity.moveForward),
-																 delta * 0.1f);
+																 delta * 0.5f);
 				
 			}
 			else {
@@ -75,7 +75,7 @@ public class AnimSwimming extends AnimBaseAction {
 																														entity.moveForward),
 																						-45 + entity.rotationYaw,
 																						45 + entity.rotationYaw),
-																 delta * 0.1f);
+																 delta * 0.5f);
 			}
 		}
 		

@@ -19,7 +19,6 @@ public class AnimLowFalling extends AnimCommon {
 	public boolean isGeneralConditonsMet(EntityPlayer player, AxisAlignedBB axisAlignedBB) {
 		return player.fallDistance >= minFallHeight &&
 				player.fallDistance < AnimHighFalling.minFallHeight &&
-				!player.isSneaking() &&
 				!player.capabilities.isFlying;
 	}
 	

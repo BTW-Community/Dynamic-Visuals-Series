@@ -17,9 +17,7 @@ public class AnimHighFalling extends AnimCommon {
 	
 	@Override
 	public boolean isGeneralConditonsMet(EntityPlayer player, AxisAlignedBB axisAlignedBB) {
-		return player.fallDistance >= minFallHeight &&
-				(!player.isSneaking() || (player.isSneaking() && player.doesStatusPreventSprinting())) &&
-				!player.capabilities.isFlying;
+		return player.fallDistance >= minFallHeight && !player.capabilities.isFlying;
 	}
 	
 	@Override
@@ -39,7 +37,7 @@ public class AnimHighFalling extends AnimCommon {
 		float sin1 = MathHelper.sin(leaning + 2);
 		
 		float[] head = new float[]{
-				0.25f, i * (pi / 180.0f), 0, 0, 0, 0
+				0.25f, MathHelper.clamp_float(i * (pi / 180.0f), -pi(1, 4), pi(1, 4)), 0, 0, 0, 0
 		};
 		float[] body = new float[]{0, 0, 0, 0, 12, 0};
 		float[] rArm = new float[]{cos, 0, 1.75f + sin, -5, 2, 0};
@@ -58,7 +56,7 @@ public class AnimHighFalling extends AnimCommon {
 	@Override
 	public void updateLeaning(EntityLivingBase entity) {
 		ICustomMovementEntity customEntity = (ICustomMovementEntity) entity;
-		float goal = (entity.fallDistance - minFallHeight) / 6;
+		float goal = entity.ticksExisted / 3f;
 		
 		customEntity.lmm_$setLeaningPitch(goal);
 	}

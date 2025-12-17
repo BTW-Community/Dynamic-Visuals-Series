@@ -94,20 +94,20 @@ public abstract class ModelBipedMixin extends ModelBase {
 			}
 			else {
 				prevOffset = animation.yOffset != 0 ? animation.yOffset : 1.98f - entity.height;
-				prevYRotation = GeneralUtils.incrementAngleUntilGoal(renderRotOff[2], 0, 0.1f * delta);
-				prevZRotation = GeneralUtils.incrementAngleUntilGoal(renderRotOff[3], 0, 0.1f * delta);
+				prevYRotation = GeneralUtils.incrementAngleUntilGoal(renderRotOff[2], 0, 0.2f * delta);
+				prevZRotation = GeneralUtils.incrementAngleUntilGoal(renderRotOff[3], 0, 0.2f * delta);
 				prevXRotation = GeneralUtils.incrementAngleUntilGoal(renderRotOff[1],
 																	 90 * leaningPitch,
 																	 (customEntity.lmm_$isAnimation(AnimCrawling.id)
-																	  ? 0.5f
-																	  : 0.2f) * delta);
+																	  ? 0.8f
+																	  : 0.4f) * delta);
 			}
 		}
 		else {
-			prevOffset = GeneralUtils.incrementUntilGoal(renderRotOff[0], 0, 0.4f * delta);
-			prevYRotation = GeneralUtils.incrementAngleUntilGoal(renderRotOff[2], 0, 0.2f * delta);
-			prevZRotation = GeneralUtils.incrementAngleUntilGoal(renderRotOff[3], 0, 0.2f * delta);
-			prevXRotation = GeneralUtils.incrementAngleUntilGoal(renderRotOff[1], 0, 0.35f * delta);
+			prevOffset = GeneralUtils.incrementUntilGoal(renderRotOff[0], 0, 0.5f * delta);
+			prevYRotation = GeneralUtils.incrementAngleUntilGoal(renderRotOff[2], 0, 0.75f * delta);
+			prevZRotation = GeneralUtils.incrementAngleUntilGoal(renderRotOff[3], 0, 0.75f * delta);
+			prevXRotation = GeneralUtils.incrementAngleUntilGoal(renderRotOff[1], 0, 0.75f * delta);
 		}
 		
 		float[] newRenderRotOff = new float[]{prevOffset, prevXRotation, prevYRotation, prevZRotation};

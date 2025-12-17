@@ -8,8 +8,6 @@ import java.util.*;
 
 @SuppressWarnings("unused")
 public class DVS_ConfigManager {
-	public static DVS_ConfigManager.ConfigValue<Boolean> SMOOTH_ANIMATION;
-	
 	private static final File file = new File("config/dynamic_visuals.properties");
 	private static final Properties properties = new Properties();
 	private static final List<BaseSetting> settings = new ArrayList<>();

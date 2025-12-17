@@ -217,7 +217,7 @@ public class AnimCommon extends BaseAnimation {
 				
 				entity.renderYawOffset = incrementAngleUntilGoal(entity.renderYawOffset,
 																 entity.rotationYaw + yaw,
-																 delta * 0.1f);
+																 delta * 0.5f);
 			}
 			else if (isMoving) {
 				yaw = forw > 0
@@ -228,7 +228,7 @@ public class AnimCommon extends BaseAnimation {
 				
 				player.renderYawOffset = incrementAngleUntilGoal(player.renderYawOffset,
 																 player.rotationYaw + yaw,
-																 delta * 0.1f);
+																 delta * 0.5f);
 			}
 		}
 		
@@ -352,8 +352,8 @@ public class AnimCommon extends BaseAnimation {
 						
 						rArm[0] = (float) (jumpSwing * pi(1, 3) * g * (1 - motionY));
 						lArm[0] = (float) (-jumpSwing * pi(1, 3) * g * (1 - motionY));
-						rLeg[0] = (float) (-jumpSwing * pi(1, 4) * g * (1 - motionY));
-						lLeg[0] = (float) (jumpSwing * pi(1, 4) * g * (1 - motionY));
+						rLeg[0] = MathHelper.clamp_float((float) (-jumpSwing * pi(1, 4) * g * (1 - motionY)), -pi(1, 3), pi(1, 3));
+						lLeg[0] = MathHelper.clamp_float((float) (jumpSwing * pi(1, 4) * g * (1 - motionY)), -pi(1, 3), pi(1, 3));
 						
 						rLeg[2] = (float) Math.abs(jumpSwing * pi(1, 32) * g * (1 - motionY));
 						lLeg[2] = (float) -Math.abs(jumpSwing * pi(1, 32) * g * (1 - motionY));
@@ -364,8 +364,9 @@ public class AnimCommon extends BaseAnimation {
 						rArm[0] = (float) (jumpSwing * pi(1, 3) * (1 - motionY) * v1);
 						lArm[0] = (float) (-jumpSwing * pi(1, 3) * (1 - motionY) * v1);
 						
-						rLeg[0] = Math.abs(forw) * pi(1, 16) * (jumpSwing < 0 ? backward ? 0 : 3 : backward ? -2 : 2) * v;
-						lLeg[0] = Math.abs(forw) * pi(1, 16) * (-jumpSwing < 0 ? backward ? 0 : 3 : backward ? -2 : 2) * v;
+						float move = Math.max(Math.abs(forw), Math.abs(straf));
+						rLeg[0] = move * pi(1, 16) * (jumpSwing < 0 ? backward ? 0 : 3 : backward ? -2 : 2) * v;
+						lLeg[0] = move * pi(1, 16) * (-jumpSwing < 0 ? backward ? 0 : 3 : backward ? -2 : 2) * v;
 						
 						rLeg[4] = (float) (12 - Math.max(0, jumpSwing * 2) * 2 * motYposRev * v1);
 						rLeg[5] = (float) (-Math.max(0, jumpSwing * 2) * g * 2 * motYposRev * v);
