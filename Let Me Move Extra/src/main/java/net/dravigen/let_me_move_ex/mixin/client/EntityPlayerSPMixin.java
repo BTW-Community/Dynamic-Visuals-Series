@@ -92,7 +92,7 @@ public abstract class EntityPlayerSPMixin extends AbstractClientPlayer {
 					}
 				}
 			}
-			else if (!this.worldObj.getCollidingBlockBounds(this.boundingBox).isEmpty() &&
+			else if (!this.worldObj.getCollidingBlockBounds(this.boundingBox.copy().contract(0.1, 0, 0.1)).isEmpty() &&
 					!GeneralUtils.isEntityFeetInsideBlock(this)) {
 				if (this.capabilities.isFlying) {
 					customPlayer.lmm_$setAnimation(AnimDiving.id);

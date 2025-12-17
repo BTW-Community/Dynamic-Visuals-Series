@@ -1,5 +1,6 @@
 package net.dravigen.dranimation_lib.utils;
 
+import net.dravigen.dranimation_lib.settings.DVS_ConfigManager;
 import net.minecraft.src.*;
 
 import java.util.List;
@@ -7,7 +8,6 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class GeneralUtils {
 	public static final float pi = (float) Math.PI;
-	// Thresholds used to classify movement based on the dot product value
 	private static final float FORWARD_THRESHOLD = 0.1f;
 	private static final float BACKWARD_THRESHOLD = -0.1f;
 	
@@ -109,10 +109,9 @@ public class GeneralUtils {
 	}
 	
 	public static float incrementUntilGoal(float currentValue, float goalValue, float easeFactor) {
-		
 		float difference = goalValue - currentValue;
 		
-		float stepSize = difference * easeFactor;
+		float stepSize = difference * (DVS_ConfigManager.SMOOTH_ANIMATION.getBool() ? easeFactor : 1);
 		
 		return currentValue + stepSize;
 	}
@@ -130,7 +129,7 @@ public class GeneralUtils {
 			difference += 360.0F;
 		}
 		
-		float stepSize = difference * easeFactor;
+		float stepSize = difference * (DVS_ConfigManager.SMOOTH_ANIMATION.getBool() ? easeFactor : 1);
 		
 		float newValue = currentValue + stepSize;
 		

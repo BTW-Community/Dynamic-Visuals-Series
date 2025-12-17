@@ -20,10 +20,8 @@ public abstract class ModelBipedMixin {
 	public ModelRenderer bipedLeftArm;
 	@Shadow
 	public ModelRenderer bipedCloak;
-	
 	@Shadow
 	public ModelRenderer bipedHead;
-	
 	@Shadow
 	public ModelRenderer bipedHeadwear;
 	
@@ -41,29 +39,54 @@ public abstract class ModelBipedMixin {
 			this.bipedHeadwear.showModel = false;
 		}
 		
-		if ((Object) this instanceof PlayerArmorModel) {
-			return;
-		}
+		boolean isArmor = (Object) this instanceof PlayerArmorModel;
+		boolean hasHelmet = mc.thePlayer.getCurrentArmor(3) != null;
+		boolean hasChest = mc.thePlayer.getCurrentArmor(2) != null;
 		
 		if (isFirstPers) {
-			this.bipedBody.showModel = mc.thePlayer.isPlayerSleeping() || entity.height > 1.4 && !((ICustomMovementEntity)entity).lmm_$isAnimation(new ResourceLocation("LMM", "wallSliding"));
+			boolean shouldHideChest = mc.thePlayer.isPlayerSleeping() ||
+					entity.height > 1.4 &&
+							!((ICustomMovementEntity) entity).lmm_$isAnimation(new ResourceLocation("LMM",
+																									"wallSliding"));
+			if (isArmor) {
+				this.bipedBody.showModel = hasChest && (shouldHideChest);
+			}
+			else {
+				this.bipedBody.showModel = shouldHideChest;
+			}
 			
 			ItemStack heldItem = mc.thePlayer.getHeldItem();
+			
 			if (heldItem != null && (heldItem.itemID == Item.map.itemID)) {
 				this.bipedRightArm.showModel = false;
 				this.bipedLeftArm.showModel = false;
 			}
 			else {
-				this.bipedRightArm.showModel = true;
-				this.bipedLeftArm.showModel = true;
+				if (isArmor) {
+					this.bipedRightArm.showModel = hasChest;
+					this.bipedLeftArm.showModel = hasChest;
+				}
+				else {
+					this.bipedRightArm.showModel = true;
+					this.bipedLeftArm.showModel = true;
+				}
 			}
 		}
 		else {
-			this.bipedHead.showModel = true;
-			this.bipedHeadwear.showModel = true;
-			this.bipedBody.showModel = true;
-			this.bipedRightArm.showModel = true;
-			this.bipedLeftArm.showModel = true;
+			if (isArmor) {
+				this.bipedHead.showModel = hasHelmet;
+				this.bipedHeadwear.showModel = hasHelmet;
+				this.bipedBody.showModel = hasChest;
+				this.bipedRightArm.showModel = hasChest;
+				this.bipedLeftArm.showModel = hasChest;
+			}
+			else {
+				this.bipedHead.showModel = true;
+				this.bipedHeadwear.showModel = true;
+				this.bipedBody.showModel = true;
+				this.bipedRightArm.showModel = true;
+				this.bipedLeftArm.showModel = true;
+			}
 		}
 		
 		this.bipedCloak.showModel = this.bipedBody.showModel;

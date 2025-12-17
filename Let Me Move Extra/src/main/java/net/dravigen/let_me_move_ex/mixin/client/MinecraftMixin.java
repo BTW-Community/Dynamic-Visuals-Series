@@ -34,17 +34,12 @@ public abstract class MinecraftMixin {
 		if (this.theWorld == null && AnimationUtils.extraIsPresent) {
 			AnimationUtils.extraIsPresent = false;
 		}
-		
 		if (!AnimationUtils.extraIsPresent) return;
 		
 		EntityPlayer player = this.thePlayer;
 		ICustomMovementEntity customPlayer = (ICustomMovementEntity) player;
 		
 		if (!this.isGamePaused && player != null) {
-			player.yOffset = GeneralUtils.incrementUntilGoal(player.yOffset,
-															 player.height - 0.18f,
-															 0.4f * AnimationUtils.delta);
-			
 			if (customPlayer.lmm_$isAnimation(AnimRolling.id) && this.gameSettings.thirdPersonView == 0) {
 				float leaning = customPlayer.lmm_$getLeaningPitch(this.getTimer().renderPartialTicks);
 				
@@ -59,12 +54,6 @@ public abstract class MinecraftMixin {
 					player.prevCameraPitch = player.cameraPitch;
 				}
 			}
-			
-			float yaw = (player.renderYawOffset) % (360);
-			
-			yaw = yaw < 0 ? 360 + yaw : yaw;
-			
-			player.renderYawOffset = yaw;
 		}
 	}
 }

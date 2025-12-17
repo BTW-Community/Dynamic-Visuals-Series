@@ -3,10 +3,7 @@ package net.dravigen.let_me_move.mixin.client;
 import net.dravigen.dranimation_lib.utils.AnimationUtils;
 import net.dravigen.dranimation_lib.utils.GeneralUtils;
 import net.dravigen.let_me_move.LetMeMoveAddon;
-import net.minecraft.src.EntityClientPlayerMP;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.Minecraft;
-import net.minecraft.src.WorldClient;
+import net.minecraft.src.*;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -25,8 +22,6 @@ public abstract class MinecraftMixin {
 	
 	@Inject(method = "runGameLoop", at = @At("HEAD"))
 	private void updateRender(CallbackInfo ci) {
-		if (LetMeMoveAddon.isExtraLoaded()) return;
-		
 		EntityPlayer player = this.thePlayer;
 		
 		if (!this.isGamePaused && this.theWorld != null && player != null) {
@@ -36,11 +31,14 @@ public abstract class MinecraftMixin {
 																 0.4f * AnimationUtils.delta);
 			}
 			
-			float yaw = (player.renderYawOffset) % (360);
-			
-			yaw = yaw < 0 ? 360 + yaw : yaw;
-			
-			player.renderYawOffset = yaw;
+			/*
+			if (!player.isRiding()) {
+				float yaw = (player.renderYawOffset) % (360);
+				
+				yaw = yaw < 0 ? 360 + yaw : yaw;
+				
+				player.renderYawOffset = yaw;
+			}*/
 		}
 	}
 }

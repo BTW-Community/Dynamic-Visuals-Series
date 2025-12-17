@@ -195,7 +195,7 @@ public class AnimCommon extends BaseAnimation {
 		double motionY = player.posY - player.prevPosY;
 		boolean isJumping = customEntity.lmm_$getJumpTime() > 0 && !player.inWater;
 		boolean isCrouching = model.isSneak || customEntity.lmm_$isAnimation(AnimCrouching.id);
-		boolean isFlying = customEntity.lmm_$getIsFlying();
+		boolean isFlying = customEntity.lmm_$getIsFlying() && !player.isRiding();
 		float forw = GeneralUtils.getMovementComponents(player)[0];
 		float straf = GeneralUtils.getMovementComponents(player)[1];
 		forw = forw > 0 ? forw < 0.2 ? 0 : forw : forw > -0.2 ? 0 : forw;
@@ -231,11 +231,11 @@ public class AnimCommon extends BaseAnimation {
 																 delta * 0.1f);
 			}
 		}
+		
 		float mul = bSprint ? 0.525f : 0.5f;
 		
 		if (model.isRiding) {
 			Entity mount = entity.ridingEntity;
-			entity.renderYawOffset = mount.rotationYaw + 90;
 			
 			if (mount instanceof EntityMinecart minecart) {
 				
@@ -606,6 +606,6 @@ public class AnimCommon extends BaseAnimation {
 	
 	@Override
 	public boolean customBodyHeadRotation(EntityLivingBase entity) {
-		return ((EntityPlayer) entity).capabilities.isFlying;
+		return ((EntityPlayer) entity).capabilities.isFlying && !entity.isRiding();
 	}
 }

@@ -54,15 +54,29 @@ public class AnimSwimming extends AnimBaseAction {
 		float leaningPitch = Math.min(1.0F,
 									  customEntity.lmm_$getLeaningPitch(Minecraft.getMinecraft()
 																				.getTimer().renderPartialTicks));
-		
 		if (entity.moveForward != 0 || entity.moveStrafing != 0) {
-			entity.renderYawOffset = incrementAngleUntilGoal(entity.renderYawOffset,
-															 MathHelper.clamp_float(entity.rotationYaw -
-																	 90 *
-																			 (entity.moveStrafing -
-																					 entity.moveStrafing / 2 *
-																							 entity.moveForward), -45 + entity.rotationYaw, 45 + entity.rotationYaw),
-															 delta * 0.1f);
+			if (customEntity.lmm_$isAnimation(AnimCrawling.id)) {
+				entity.renderYawOffset = incrementAngleUntilGoal(entity.renderYawOffset,
+																 entity.rotationYaw -
+																		 90 *
+																				 (entity.moveStrafing -
+																						 entity.moveStrafing / 2 *
+																								 entity.moveForward),
+																 delta * 0.1f);
+				
+			}
+			else {
+				entity.renderYawOffset = incrementAngleUntilGoal(entity.renderYawOffset,
+																 MathHelper.clamp_float(entity.rotationYaw -
+																								90 *
+																										(entity.moveStrafing -
+																												entity.moveStrafing /
+																														2 *
+																														entity.moveForward),
+																						-45 + entity.rotationYaw,
+																						45 + entity.rotationYaw),
+																 delta * 0.1f);
+			}
 		}
 		
 		leaningPitch = entity.inWater ? 1 : leaningPitch;

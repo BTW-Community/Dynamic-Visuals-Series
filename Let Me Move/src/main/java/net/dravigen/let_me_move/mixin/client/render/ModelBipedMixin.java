@@ -177,7 +177,7 @@ public abstract class ModelBipedMixin extends ModelBase {
 			
 			AnimationUtils.updateAnimationRotation(customEntity.lmm_$getParHolder(), (ModelBiped) (Object) this);
 			
-			if (player.getCurrentItemOrArmor(2) == null) {
+			if (player.getCurrentItemOrArmor(3) == null) {
 				this.bipedCloak.rotationPointZ = 0.0F;
 				this.bipedCloak.rotationPointY = 0.0F;
 			}

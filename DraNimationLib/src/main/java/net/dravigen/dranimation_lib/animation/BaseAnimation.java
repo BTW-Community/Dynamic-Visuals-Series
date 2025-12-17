@@ -99,7 +99,7 @@ public abstract class BaseAnimation {
 	}
 	
 	public String getName(EntityPlayer player) {
-		if (player.capabilities.isFlying) {
+		if (player.capabilities.isFlying && !player.isRiding()) {
 			return StatCollector.translateToLocal("LMM.animation.flying");
 		}
 		

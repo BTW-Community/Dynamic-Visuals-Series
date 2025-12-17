@@ -66,6 +66,9 @@ public abstract class EntityLivingBaseMixin extends Entity implements ICustomMov
 	@Shadow
 	public abstract boolean attackEntityFrom(DamageSource par1DamageSource, float par2);
 	
+	@Shadow
+	public float renderYawOffset;
+	
 	@Override
 	public float lmm_$getLeaningPitch(float tickDelta) {
 		return GeneralUtils.lerpF(tickDelta, this.lastLeaningPitch, this.leaningPitch);
@@ -279,7 +282,42 @@ public abstract class EntityLivingBaseMixin extends Entity implements ICustomMov
 	private float disableHeadTurn(EntityLivingBase instance, float par1, float par2) {
 		ICustomMovementEntity customEntity = (ICustomMovementEntity) instance;
 		
-		if (instance instanceof EntityPlayer && customEntity.lmm_$getAnimation().customBodyHeadRotation(instance)) {
+		if (instance instanceof EntityPlayer player) {
+			if (!customEntity.lmm_$getAnimation().customBodyHeadRotation(instance)) {
+				if (this.isRiding()) {
+					float var4 = MathHelper.wrapAngleTo180_float(this.rotationYaw - this.renderYawOffset);
+					
+					if (var4 < -45.0f) {
+						player.renderYawOffset = player.rotationYaw + 45.0f;
+					}
+					if (var4 >= 45.0f) {
+						player.renderYawOffset = player.rotationYaw - 45.0f;
+					}
+				}
+				else {
+					float var3 = MathHelper.wrapAngleTo180_float(par1 - this.renderYawOffset);
+					this.renderYawOffset += var3 * 0.3f;
+					float var4 = MathHelper.wrapAngleTo180_float(this.rotationYaw - this.renderYawOffset);
+					boolean var5 = var4 < -90.0f || var4 >= 90.0f;
+				
+					if (var4 < -75.0f) {
+						var4 = -75.0f;
+					}
+					if (var4 >= 75.0f) {
+						var4 = 75.0f;
+					}
+					
+					this.renderYawOffset = this.rotationYaw - var4;
+					
+					if (var4 * var4 > 75 * 75) {
+						this.renderYawOffset += var4;
+					}
+					if (var5) {
+						par2 *= -1.0f;
+					}
+				}
+			}
+			
 			return par2;
 		}
 		

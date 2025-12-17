@@ -1,6 +1,7 @@
 package net.dravigen.let_me_see.mixin;
 
 import net.dravigen.dranimation_lib.utils.AnimationUtils;
+import net.dravigen.dranimation_lib.utils.GeneralUtils;
 import net.dravigen.let_me_see.config.LMS_Settings;
 import net.minecraft.src.*;
 import org.lwjgl.opengl.GL11;
@@ -17,7 +18,7 @@ import static net.dravigen.dranimation_lib.utils.GeneralUtils.incrementUntilGoal
 @Mixin(EntityRenderer.class)
 public abstract class EntityRendererMixin {
 	@Unique
-	float strafAngle = 0;
+	float bobbing = 0;
 	@Unique
 	float jumpAngle = 0;
 	@Unique
@@ -26,6 +27,7 @@ public abstract class EntityRendererMixin {
 	float prevYaw = 0;
 	@Shadow
 	private Minecraft mc;
+	
 	
 	@Redirect(method = "setupViewBobbing", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL11;glRotatef(FFFF)V", ordinal = 0))
 	private void customBobbingRoll(float angle, float x, float y, float z) {
@@ -37,33 +39,39 @@ public abstract class EntityRendererMixin {
 			
 			float strafingMul = (float) LMS_Settings.STRAFING_MULTIPLIER.getDouble();
 			float cameraMul = (float) LMS_Settings.CAMERA_MULTIPLIER.getDouble();
+			float swingMul = (float) LMS_Settings.SWING_MULTIPLIER.getDouble();
 			
-			float goal = (player.moveStrafing != 0 ? (float) (-1.75f * Math.pow(player.moveStrafing, 3)) : 0) *
-					strafingMul + (1.25f * (player.rotationYaw - prevYaw)) * cameraMul;
-			
-			float factor = player.moveStrafing == 0 || player.rotationYaw - prevYaw == 0 ? 0.15f : 0.005f;
+			float goal = (float) ((player.moveStrafing != 0 ? -1.5 * Math.pow(player.moveStrafing, 3) : 0) *
+					strafingMul +
+					swingMul *
+							GeneralUtils.lerpF(mc.getTimer().renderPartialTicks,
+											   player.prevSwingProgress,
+											   player.swingProgress) +
+					(0.5 * (player.rotationYaw - prevYaw)) * cameraMul);
+		
+			float factor = player.moveStrafing == 0 || player.rotationYaw - prevYaw == 0 ? 0.25f : 0.005f;
 			
 			prevYaw = player.rotationYaw;
 			
-			strafAngle = MathHelper.clamp_float(incrementUntilGoal(strafAngle, goal, delta * factor), -10, 10);
+			bobbing = MathHelper.clamp_float(incrementUntilGoal(bobbing, goal, delta * factor), -10, 10);
 			
 			float mul = (float) LMS_Settings.BOBBING_MULTIPLIER.getDouble();
 			
-			GL11.glRotatef(angle * Math.max(0, 3f * mul) + strafAngle, x, y, z);
+			GL11.glRotatef(angle * 3f * mul + bobbing, x, y, z);
 		}
 	}
 	
 	@Redirect(method = "setupViewBobbing", at = @At(value = "INVOKE", target = "Lorg/lwjgl/opengl/GL11;glRotatef(FFFF)V", ordinal = 1))
 	private void customBobbingPitch(float angle, float x, float y, float z) {
 		if (mc.gameSettings.thirdPersonView == 0) {
-			
 			float delta = AnimationUtils.delta;
 			
 			EntityClientPlayerMP player = Minecraft.getMinecraft().thePlayer;
 			
 			float goal = player.moveForward != 0 ? player.isSprinting()
-												   ? 4 * player.moveForward
-												   : 2.75f * player.moveForward : 0;
+												   ? 3.75f * player.moveForward
+												   : 2.5f * player.moveForward : 0;
+			float jumpGoal = 8 * (float) (player.posY - player.prevPosY);
 			
 			boolean still = player.moveForward == 0 || player.motionY == 0;
 			
@@ -71,15 +79,13 @@ public abstract class EntityRendererMixin {
 			float factor2 = 0.4f;
 			
 			frowAngle = MathHelper.clamp_float(incrementUntilGoal(frowAngle, goal, delta * factor1), -5, 10);
-			jumpAngle = MathHelper.clamp_float(incrementUntilGoal(jumpAngle,
-																  10 * (float) (player.posY - player.prevPosY),
-																  delta * factor2), -5, 8);
+			jumpAngle = MathHelper.clamp_float(incrementUntilGoal(jumpAngle, jumpGoal, delta * factor2), -5, 8);
 			
 			float mul = (float) LMS_Settings.BOBBING_MULTIPLIER.getDouble();
 			float forwardMul = (float) LMS_Settings.FORWARD_MULTIPLIER.getDouble();
 			float jumpMul = (float) LMS_Settings.JUMP_MULTIPLIER.getDouble();
 			
-			GL11.glRotatef(angle * Math.max(0, 2f * mul) + frowAngle * forwardMul, x, y, z);
+			GL11.glRotatef(angle * 2f * mul + frowAngle * forwardMul, x, y, z);
 			GL11.glRotatef(jumpAngle * jumpMul, x, y, z);
 		}
 	}
@@ -93,5 +99,14 @@ public abstract class EntityRendererMixin {
 		if (LMS_Settings.FIRST_PERSON_MODEL.getBool() && !holdingSpecialItem) {
 			ci.cancel();
 		}
+	}
+	
+	@Unique
+	private static float incrementUntilGoal(float currentValue, float goalValue, float easeFactor) {
+		float difference = goalValue - currentValue;
+		
+		float stepSize = difference * easeFactor;
+		
+		return currentValue + stepSize;
 	}
 }
