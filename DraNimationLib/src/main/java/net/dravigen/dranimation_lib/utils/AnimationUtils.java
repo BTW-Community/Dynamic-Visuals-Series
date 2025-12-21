@@ -1,7 +1,6 @@
 package net.dravigen.dranimation_lib.utils;
 
 import net.dravigen.dranimation_lib.animation.BaseAnimation;
-import net.minecraft.src.Minecraft;
 import net.minecraft.src.ModelBiped;
 import net.minecraft.src.ModelRenderer;
 import net.minecraft.src.ResourceLocation;
@@ -64,9 +63,9 @@ public class AnimationUtils {
 	
 	public static void smoothRotate(float[] partHolder, AnimationUtils.type type, float rot, float factor) {
 		switch (type) {
-			case X  -> partHolder[0] = rot;
-			case Y  -> partHolder[1] = rot;
-			case Z  -> partHolder[2] = rot;
+			case X -> partHolder[0] = rot;
+			case Y -> partHolder[1] = rot;
+			case Z -> partHolder[2] = rot;
 			case Xp -> partHolder[3] = rot;
 			case Yp -> partHolder[4] = rot;
 			case Zp -> partHolder[5] = rot;

@@ -1,7 +1,9 @@
 package net.dravigen.let_me_move.animation.player.poses;
 
-import net.dravigen.dranimation_lib.interfaces.ICustomMovementEntity;
-import net.minecraft.src.*;
+import net.minecraft.src.AxisAlignedBB;
+import net.minecraft.src.EntityLivingBase;
+import net.minecraft.src.EntityPlayer;
+import net.minecraft.src.ResourceLocation;
 
 public class AnimCrouching extends AnimCommon {
 	public static final ResourceLocation id = new ResourceLocation("LMM", "crouching");

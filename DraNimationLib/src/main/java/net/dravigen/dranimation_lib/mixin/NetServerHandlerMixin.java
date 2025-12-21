@@ -19,10 +19,8 @@ public class NetServerHandlerMixin {
 	private void tu_onCustomPayloadC2S(Packet250CustomPayload packet, CallbackInfo ci) {
 		switch (packet.channel) {
 			case PacketUtils.ID_SYNC_CH -> PacketUtils.handleAnimationSync(packet, this.playerEntity);
-			case PacketUtils.EXHAUSTION_CH ->
-					PacketUtils.handleExhaustionFromClient(packet, this.playerEntity);
-			case PacketUtils.DATA_SYNC_CH ->
-					PacketUtils.handleAnimationDataOnServer(packet, this.playerEntity);
+			case PacketUtils.EXHAUSTION_CH -> PacketUtils.handleExhaustionFromClient(packet, this.playerEntity);
+			case PacketUtils.DATA_SYNC_CH -> PacketUtils.handleAnimationDataOnServer(packet, this.playerEntity);
 		}
 	}
 }

@@ -1,6 +1,5 @@
 package net.dravigen.dranimation_lib.utils;
 
-import net.dravigen.dranimation_lib.settings.DVS_ConfigManager;
 import net.minecraft.src.*;
 
 import java.util.List;

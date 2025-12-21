@@ -11,7 +11,8 @@ import static net.dravigen.dranimation_lib.utils.GeneralUtils.*;
 
 @SuppressWarnings("unused")
 public class AnimCommon extends BaseAnimation {
-	private boolean jumped = false;
+	private final boolean jumped = false;
+	
 	public AnimCommon(ResourceLocation id, float height, float speedModifier, boolean needYOffsetUpdate,
 			int maxCooldown, int duration, boolean shouldAutoUpdate, float yOffset) {
 		super(id, height, speedModifier, needYOffsetUpdate, maxCooldown, duration, shouldAutoUpdate, yOffset);
@@ -158,7 +159,8 @@ public class AnimCommon extends BaseAnimation {
 		lLeg[5] -= sin(v0) * 12;
 	}
 	
-	protected void hurt(float h, EntityLivingBase entity, float[] head, float[] body, float[] rArm, float[] lArm, float[] rLeg, float[] lLeg) {
+	protected void hurt(float h, EntityLivingBase entity, float[] head, float[] body, float[] rArm, float[] lArm,
+			float[] rLeg, float[] lLeg) {
 		if (entity.hurtTime >= 5) {
 			int hurt = entity.hurtTime - 5;
 			
@@ -177,6 +179,20 @@ public class AnimCommon extends BaseAnimation {
 		}
 	}
 	
+	@Override
+	public String getName(EntityPlayer player) {
+		ICustomMovementEntity customEntity = (ICustomMovementEntity) player;
+		
+		if (!player.inWater &&
+				!customEntity.lmm_$getIsFlying() &&
+				!player.isRiding() &&
+				!customEntity.lmm_$getOnGround() &&
+				customEntity.lmm_$getJumpTime() > 0) {
+			return StatCollector.translateToLocal("LMM.animation.jumping");
+		}
+		
+		return super.getName(player);
+	}
 	
 	@Override
 	public boolean isGeneralConditonsMet(EntityPlayer player, AxisAlignedBB axisAlignedBB) {
@@ -373,8 +389,12 @@ public class AnimCommon extends BaseAnimation {
 						
 						rArm[0] = (float) (jumpSwing * pi(1, 3) * g * (1 - motionY));
 						lArm[0] = (float) (-jumpSwing * pi(1, 3) * g * (1 - motionY));
-						rLeg[0] = MathHelper.clamp_float((float) (-jumpSwing * pi(1, 4) * g * (1 - motionY)), -pi(1, 3), pi(1, 3));
-						lLeg[0] = MathHelper.clamp_float((float) (jumpSwing * pi(1, 4) * g * (1 - motionY)), -pi(1, 3), pi(1, 3));
+						rLeg[0] = MathHelper.clamp_float((float) (-jumpSwing * pi(1, 4) * g * (1 - motionY)),
+														 -pi(1, 3),
+														 pi(1, 3));
+						lLeg[0] = MathHelper.clamp_float((float) (jumpSwing * pi(1, 4) * g * (1 - motionY)),
+														 -pi(1, 3),
+														 pi(1, 3));
 						
 						rLeg[2] = (float) Math.abs(jumpSwing * pi(1, 32) * g * (1 - motionY));
 						lLeg[2] = (float) -Math.abs(jumpSwing * pi(1, 32) * g * (1 - motionY));
@@ -631,16 +651,5 @@ public class AnimCommon extends BaseAnimation {
 	@Override
 	public boolean customBodyHeadRotation(EntityLivingBase entity) {
 		return ((EntityPlayer) entity).capabilities.isFlying && !entity.isRiding();
-	}
-	
-	@Override
-	public String getName(EntityPlayer player) {
-		ICustomMovementEntity customEntity = (ICustomMovementEntity) player;
-		
-		if (!player.inWater && !customEntity.lmm_$getIsFlying() && !player.isRiding() && !customEntity.lmm_$getOnGround() && customEntity.lmm_$getJumpTime() > 0) {
-			return StatCollector.translateToLocal("LMM.animation.jumping");
-		}
-		
-		return super.getName(player);
 	}
 }

@@ -21,6 +21,8 @@ import java.util.Map;
 @Mixin(EntityLivingBase.class)
 public abstract class EntityLivingBaseMixin extends Entity implements ICustomMovementEntity {
 	
+	@Shadow
+	public float renderYawOffset;
 	@Unique
 	private float leaningPitch;
 	@Unique
@@ -66,9 +68,6 @@ public abstract class EntityLivingBaseMixin extends Entity implements ICustomMov
 	@Shadow
 	public abstract boolean attackEntityFrom(DamageSource par1DamageSource, float par2);
 	
-	@Shadow
-	public float renderYawOffset;
-	
 	@Override
 	public float lmm_$getLeaningPitch(float tickDelta) {
 		return GeneralUtils.lerpF(tickDelta, this.lastLeaningPitch, this.leaningPitch);
@@ -107,10 +106,6 @@ public abstract class EntityLivingBaseMixin extends Entity implements ICustomMov
 			if (this.worldObj.isRemote) {
 				PacketUtils.animationCtoSSync(ID);
 			}
-			
-			/*if (!ID.equals(this.currentAnimation)) {
-				this.animationCooldowns.put(this.currentAnimation, this.lmm_$getAnimation().maxCooldown);
-			}*/
 			
 			this.currentAnimation = ID;
 			
@@ -299,7 +294,7 @@ public abstract class EntityLivingBaseMixin extends Entity implements ICustomMov
 					this.renderYawOffset += var3 * 0.3f;
 					float var4 = MathHelper.wrapAngleTo180_float(this.rotationYaw - this.renderYawOffset);
 					boolean var5 = var4 < -90.0f || var4 >= 90.0f;
-				
+					
 					if (var4 < -75.0f) {
 						var4 = -75.0f;
 					}

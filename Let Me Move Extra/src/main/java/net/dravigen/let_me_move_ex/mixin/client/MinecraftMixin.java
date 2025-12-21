@@ -2,7 +2,6 @@ package net.dravigen.let_me_move_ex.mixin.client;
 
 import net.dravigen.dranimation_lib.interfaces.ICustomMovementEntity;
 import net.dravigen.dranimation_lib.utils.AnimationUtils;
-import net.dravigen.dranimation_lib.utils.GeneralUtils;
 import net.dravigen.let_me_move_ex.animation.player.actions.AnimRolling;
 import net.minecraft.src.*;
 import org.spongepowered.asm.mixin.Mixin;
