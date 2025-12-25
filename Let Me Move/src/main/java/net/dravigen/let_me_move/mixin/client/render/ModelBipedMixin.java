@@ -113,8 +113,10 @@ public abstract class ModelBipedMixin extends ModelBase {
 			int y = MathHelper.floor_double(entity.boundingBox.minY);
 			int z = MathHelper.floor_double(entity.posZ);
 			
-			if (entity.worldObj.getBlockId(x, y, z) == BTWBlocks.ladder.blockID) {
-				int ladderMeta = entity.worldObj.getBlockMetadata(x, y, z);
+			World world = entity.worldObj;
+			int id = world.getBlockId(x, y, z);
+			if (Block.blocksList[id].isBlockClimbable(world, x, y, z)) {
+				int ladderMeta = world.getBlockMetadata(x, y, z);
 				
 				player.renderYawOffset = switch (ladderMeta) {
 					case 0 -> GeneralUtils.incrementAngleUntilGoal(player.renderYawOffset, 0, 1);

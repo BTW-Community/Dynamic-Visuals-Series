@@ -25,8 +25,6 @@ public class AnimClimbing extends AnimCommon {
 		ICustomMovementEntity customEntity = (ICustomMovementEntity) entity;
 		ModelPartHolder partHolder = customEntity.lmm_$getParHolder();
 		
-		//partHolder.resetAnimationRotationPoints();
-		
 		i = clampedI(i);
 		
 		float[] head = new float[]{
